@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Lite Objects]]></title>
+  <link href="http://liteobj.github.io/atom.xml" rel="self"/>
+  <link href="http://liteobj.github.io/"/>
+  <updated>2013-09-18T23:59:47+08:00</updated>
+  <id>http://liteobj.github.io/</id>
+  <author>
+    <name><![CDATA[Kiran]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[C++ Classes]]></title>
+    <link href="/c-plus-plus-classes/"/>
+    <updated>2013-09-13T07:17:00+08:00</updated>
+    <id>/c-plus-plus-classes</id>
+    <content type="html"><![CDATA[<p>Structure defaults to public while class defaults to private. Union can not be a base class as memory of the member variables are overlayed.</p>
+
+<p>Upcasting is a way of taking an address of the object and treating it as the base class.</p>
+
+<!-- more -->
+
+
+<p>VTable holds the list of virtual functions. The size of the class A with one or more virtual function is equal to size(A) + size of void pointer. VPTR is created during the initialisation of the class hence default constructor comes into act.
+typeid is used for down casting, by overcoming the behaviour of dynamic casting.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[C++ Constructor and Destructor]]></title>
+    <link href="/c-plus-plus-constructor-and-destructor/"/>
+    <updated>2013-09-13T07:16:00+08:00</updated>
+    <id>/c-plus-plus-constructor-and-destructor</id>
+    <content type="html"><![CDATA[<p>Object’s lifetime begins only after the constructor completes successfully.</p>
+
+<p>it’s not good to throw exceptions from within the destructor. During stack unwinding there might exist another exception which is still active.</p>
+
+<!-- more -->
+
+
+<p>Default constructor is called with no arguments. If a virtual function is called within the constructor, the local version of the function is called. And also virtual keyword does not make any sense in contractor but in destructor it is very important to use it to avoid memory leak. Pure virtual destructors will not allow creation of the abstract base class.</p>
+
+<p>Default Copy constructor copies the object bit by bit. If the object contains pointers, both the objects will point to the same memory buffer.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Smart Pointers: auto_ptr vs unique_ptr vs shared_ptr]]></title>
+    <link href="/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/"/>
+    <updated>2013-09-13T07:13:00+08:00</updated>
+    <id>/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr</id>
+    <content type="html"><![CDATA[<p>auto_ptr is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto_ptr can be copied where as unique_ptr can be moved using std::move().</p>
+
+<!-- more -->
+
+
+<p>After copy operation is complete the old auto_ptr gets releases (destroyed).</p>
+
+<p>The unique_ptr can also handle array. There can not be two auto_ptr managing a single objects, of this purpose there is shared pointer.</p>
+]]></content>
+  </entry>
+  
+</feed>

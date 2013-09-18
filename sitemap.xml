@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
+    <url>
+        <loc>http://liteobj.github.io/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/</loc>
+        <lastmod>2013-09-17T00:16:24+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://liteobj.github.io/c-plus-plus-constructor-and-destructor/</loc>
+        <lastmod>2013-09-17T00:16:24+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://liteobj.github.io/c-plus-plus-classes/</loc>
+        <lastmod>2013-09-17T00:16:24+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://liteobj.github.io/blog/archives/</loc>
+        <lastmod>2013-09-17T00:51:12+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://liteobj.github.io/</loc>
+        <lastmod>2013-09-17T00:16:24+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://liteobj.github.io/link-list/</loc>
+        <lastmod>2013-09-17T00:16:24+08:00</lastmod>
+    </url>
+</urlset>
