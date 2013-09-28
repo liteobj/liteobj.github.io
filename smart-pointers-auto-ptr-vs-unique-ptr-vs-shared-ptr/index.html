@@ -13,7 +13,7 @@
   
     
   
-  <meta name="description" content="auto_ptr is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. autoptr &hellip;">
+  <meta name="description" content="auto_ptr is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto_ptr &hellip;">
   
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -29,7 +29,7 @@
   <meta name="og:type" content="website" />
   <meta name="og:site_name" content="HiPerC" />
   <meta name="og:title" content="Smart Pointers: auto_ptr vs unique_ptr vs shared_ptr" />
-  <meta name="og:description" content="auto_ptr is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. autoptr &hellip;" />
+  <meta name="og:description" content="auto_ptr is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto_ptr &hellip;" />
   <meta name="og:url" content="http://hiperc.com/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/"/>
   <meta name="url" content="http://hiperc.com/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/">
   
@@ -142,16 +142,16 @@ posted in
   </header>
 
 
-  <div class="entry-content"><p><strong>auto_ptr</strong> is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto<em>ptr can be copied where as unique</em>ptr can be moved using std::move(). <br>
+  <div class="entry-content"><p><strong>auto_ptr</strong> is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto_ptr can be copied where as unique_ptr can be moved using std::move(). <br>
 &lt;!&#8211; more &#8211;&gt;</p>
 
 <p>After copy operation is complete the old auto_ptr gets releases (destroyed). </p>
 
-<p>The <strong>unique_ptr</strong> can also handle array. There can not be two auto<em>ptr managing a single objects, of this purpose there is shared</em>ptr.</p>
+<p>The <strong>unique_ptr</strong> can also handle array. There can not be two auto_ptr managing a single objects, of this purpose there is shared_ptr.</p>
 
-<p><strong>shared_ptr</strong> objects release ownership on the object they co-own as soon as they themselves are destroyed, or as soon as their value changes either by an assignment operation or by an explicit call to shared<em>ptr::reset. Once all shared</em>ptr objects that share ownership over a pointer have released this ownership, the managed object is deleted (normally by calling ::delete, but a different deleter may be specified on construction).</p>
+<p><strong>shared_ptr</strong> objects release ownership on the object they co-own as soon as they themselves are destroyed, or as soon as their value changes either by an assignment operation or by an explicit call to shared_ptr::reset. Once all shared_ptr objects that share ownership over a pointer have released this ownership, the managed object is deleted (normally by calling ::delete, but a different deleter may be specified on construction).</p>
 
-<p>shared<em>ptr objects can only share ownership by copying their value: If two shared</em>ptr are constructed (or made) from the same (non-shared_ptr) pointer, they will both be owning the pointer without sharing it, causing potential access problems when one of them releases it (deleting its managed object) and leaving the other pointing to an invalid location.</p>
+<p>shared_ptr objects can only share ownership by copying their value: If two shared_ptr are constructed (or made) from the same (non-shared_ptr) pointer, they will both be owning the pointer without sharing it, causing potential access problems when one of them releases it (deleting its managed object) and leaving the other pointing to an invalid location.</p>
 </div>
 
 
