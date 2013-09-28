@@ -142,8 +142,10 @@ posted in
   </header>
 
 
-  <div class="entry-content"><p><strong>Throw</strong> first it creates an object that isn’t there under normal program execution, and of course the constructor is called for that object. Then the object is, in effect, “returned” from the function, even though that object type isn’t normally what the function is designed to return. A simplistic way to think about exception handling is as an alternate return mechanism, although you get into trouble if you take the analogy too far – you can also exit from ordinary scopes by throwing an exception.
-&lt;<more>></p>
+  <div class="entry-content"><p><strong>Throw</strong> first it creates an object that isn’t there under normal program execution, and of course the constructor is called for that object. Then the object is, in effect, “returned” from the function, even though that object type isn’t normally what the function is designed to return. A simplistic way to think about exception handling is as an alternate return mechanism, although you get into trouble if you take the analogy too far – you can also exit from ordinary scopes by throwing an exception.</p>
+
+<!-- more -->
+
 
 <p>The function <strong>unexpected( )</strong> is called when you throw something other than what appears in the exception specification. <strong>set_unexpected( )</strong> is implemented with a pointer to a function, so you can change its behaviour.</p>
 
