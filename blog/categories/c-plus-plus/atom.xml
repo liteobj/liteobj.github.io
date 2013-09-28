@@ -4,7 +4,7 @@
   <title><![CDATA[Category: C++ | HiPerC]]></title>
   <link href="/blog/categories/c-plus-plus/atom.xml" rel="self"/>
   <link href="/"/>
-  <updated>2013-09-28T23:59:17+08:00</updated>
+  <updated>2013-09-29T00:10:18+08:00</updated>
   <id>http://hiperc.com/</id>
   <author>
     <name><![CDATA[HiperC]]></name>
@@ -18,12 +18,17 @@
     <link href="/casting-in-c-plus-plus/"/>
     <updated>2013-09-28T23:44:00+08:00</updated>
     <id>/casting-in-c-plus-plus</id>
-    <content type="html"><![CDATA[<p>Generally creating a specific object (Circle, Square, or Triangle), take its address and cast it to a Shape* (forgetting the specific type of the object), and use that anonymouspointer in the rest of the program. Act of casting from a more derived type to a base type is called <strong>upcasting</strong>.</p>
+    <content type="html"><![CDATA[<p>Generally creating a specific object (Circle, Square, or Triangle), take its address and cast it to a Shape* (forgetting the specific type of the object), and use that anonymous
+pointer in the rest of the program. Act of casting from a more derived type to a base type is called <strong>upcasting</strong>.</p>
+
+<!-- more -->
+
 
 <ul>
-<li><strong>static_cast</strong>: For “well-behaved” and “reasonably well behaved”casts, including things you might now do without a cast (e.g., an upcast or automatic type conversion).&ndash; <strong>const_cast</strong>: To cast away const and/or volatile.</li>
-<li><strong>dynamic_cast</strong>: For type-safe downcasting (described earlier in the chapter).</li>
-<li><strong>reinterpret_cast</strong> To cast to a completely different meaning. The key is that you’ll need to cast back to the original type to use it safely. The type you cast to is typically used only for bit twiddling or some other mysterious purpose. This is the most dangerous of all the casts.</li>
+<li><p><strong>static_cast</strong>: For “well-behaved” and “reasonably well behaved”casts, including things you might now do without a cast (e.g., an upcast or automatic type conversion).</p></li>
+<li><p><strong>const_cast</strong>: To cast away const and/or volatile.</p></li>
+<li><p><strong>dynamic_cast</strong>: For type-safe <strong>downcasting</strong>. If casting a Circle<em> to a Shape</em> is an upcast, then casting a Shape<em> to a Circle</em> is a downcast. However, you know a Circle<em> is also a Shape</em>,and the compiler freely allows an upcast assignment, but you don’t know that a Shape<em> is necessarily a Circle</em>, so the compiler doesn’t allow you to perform a downcast assignment without using an explicit cast.</p></li>
+<li><p><strong>reinterpret_cast</strong> To cast to a completely different meaning. The key is that you’ll need to cast back to the original type to use it safely. The type you cast to is typically used only for bit twiddling or some other mysterious purpose. This is the most dangerous of all the casts.</p></li>
 </ul>
 
 ]]></content>
