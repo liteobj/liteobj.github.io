@@ -166,14 +166,106 @@ posted in
   </header>
 
 
-  <div class="entry-content"><p><strong>Throw</strong> first it creates an object that isn’t there under normal program execution, and of course the constructor is called for that object. Then the object is, in effect, “returned” from the function, even though that object type isn’t normally what the function is designed to return. A simplistic way to think about exception handling is as an alternate return mechanism, although you get into trouble if you take the analogy too far – you can also exit from ordinary scopes by throwing an exception.</p>
+  <div class="entry-content"><p><strong>Throw</strong> first it creates an object that isn’t there under normal program execution, and of course the constructor is called for that object. Then the object is, in effect, “returned” from the function, even though that object type isn’t normally what the function is designed to return. A simplistic way to think about exception handling is as an alternate return mechanism, although you get into trouble if you take the analogy too far – you can also exit from ordinary scopes by throwing an exception.<br>
+&lt;!&#8211; more &#8211;&gt;</p>
 
+<p>The function <strong>unexpected( )</strong> is called when you throw something other than what appears in the exception specification. <strong>set_unexpected( )</strong> is implemented with a pointer to a function, so you can change its behaviour.</p>
+
+<p>If an exception is uncaught, the special function <strong>terminate( )</strong> is automatically called. You can install your own terminate( ) function using the standard <strong>set_terminate( )</strong> function, which returns a pointer to the terminate( ) function you are replacing, so you can restore it later if you want. </p>
+
+<ul>
+<li>exception: The base class for all the exceptions thrown by the  ++ standard library. You can ask what( ) and get a result that can be displayed as a character representation.</li>
+<li>logic_error: Derived from exception. Reports program logic errors, which could presumably be detected before the program executes.</li>
+<li>runtime_error: Derived from exception. Reports runtime errors, which can presumably be detected only when the program executes.</li>
+</ul>
+
+<h3>logic_error</h3>
+
+<ul>
+<li>domain_error: Reports violations of a precondition.</li>
+<li>invalid_argument Indicates an invalid argument to the function it’s thrown from.</li>
+<li>length<em>error: Indicates an attempt to produce an object whose length is greater than or equal to NPOS (the largest representable value of type size</em>t)</li>
+<li>out<em>of</em>range: Reports an out-of-range argument.</li>
+<li>bad<em>cast: Thrown for executing an invalid dynamic</em>cast expression in run-time type identification.</li>
+<li>bad_typeid: Reports a null pointer p in an expression typeid(*p). (Again, a run-time type).</li>
+</ul>
+
+<h3>runtime_error</h3>
+
+<ul>
+<li>range_error: Reports violation of a postcondition.</li>
+<li>overflow_error: Reports an arithmetic overflow.</li>
+<li>bad_alloc: Reports a failure to allocate storage.</li>
+</ul>
+
+<h3>Catch by reference not by value</h3>
+
+<p>example<br>
+<figure class='code'><figcaption><span>Catch by reference</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span><br>
+<span class='line-number'>2</span><br>
+<span class='line-number'>3</span><br>
+<span class='line-number'>4</span><br>
+<span class='line-number'>5</span><br>
+<span class='line-number'>6</span><br>
+<span class='line-number'>7</span><br>
+<span class='line-number'>8</span><br>
+<span class='line-number'>9</span><br>
+<span class='line-number'>10</span><br>
+<span class='line-number'>11</span><br>
+<span class='line-number'>12</span><br>
+<span class='line-number'>13</span><br>
+<span class='line-number'>14</span><br>
+<span class='line-number'>15</span><br>
+<span class='line-number'>16</span><br>
+<span class='line-number'>17</span><br>
+<span class='line-number'>18</span><br>
+<span class='line-number'>19</span><br>
+<span class='line-number'>20</span><br>
+<span class='line-number'>21</span><br>
+<span class='line-number'>22</span><br>
+<span class='line-number'>23</span><br>
+<span class='line-number'>24</span><br>
+<span class='line-number'>25</span><br>
+<span class='line-number'>26</span><br>
+<span class='line-number'>27</span><br>
+<span class='line-number'>28</span><br>
+<span class='line-number'>29</span><br>
+<span class='line-number'>30</span><br>
+<span class='line-number'>31</span><br>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span><br>
+</span><span class='line'><span class="k">public</span><span class="o">:</span><br>
+</span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">what</span><span class="p">()</span> <span class="p">{</span><br>
+</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Base&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span><br>
+</span><span class='line'>    <span class="p">}</span><br>
+</span><span class='line'><span class="p">};</span><br>
+</span><span class='line'><br>
+</span><span class='line'><span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span><br>
+</span><span class='line'><span class="k">public</span><span class="o">:</span><br>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">what</span><span class="p">()</span> <span class="p">{</span><br>
+</span><span class='line'>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Derived&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span><br>
+</span><span class='line'>    <span class="p">}</span><br>
+</span><span class='line'><span class="p">};</span><br>
+</span><span class='line'><br>
+</span><span class='line'><span class="kt">void</span> <span class="n">f</span><span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="n">Derived</span><span class="p">();</span> <span class="p">}</span><br>
+</span><span class='line'><br>
+</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span><br>
+</span><span class='line'>    <span class="k">try</span> <span class="p">{</span><br>
+</span><span class='line'>        <span class="n">f</span><span class="p">();</span><br>
+</span><span class='line'>    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Base</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span><br>
+</span><span class='line'>        <span class="n">b</span><span class="p">.</span><span class="n">what</span><span class="p">();</span><br>
+</span><span class='line'>    <span class="p">}</span><br>
+</span><span class='line'>    <span class="k">try</span> <span class="p">{</span><br>
+</span><span class='line'>        <span class="n">f</span><span class="p">();</span><br>
+</span><span class='line'>    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Base</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span><br>
+</span><span class='line'>        <span class="n">b</span><span class="p">.</span><span class="n">what</span><span class="p">();</span><br>
+</span><span class='line'>    <span class="p">}</span><br>
+</span><span class='line'><span class="p">}</span> <span class="c1">///:~</span><br>
+</span><span class='line'><span class="c1">//The output is</span><br>
+</span><span class='line'><span class="c1">//Base</span><br>
+</span><span class='line'><span class="c1">//Derived</span><br>
+</span></code></pre></td></tr></table></div></figure></p>
 </div>
   
-  
-    <footer>
-      <a rel="full-article" href="/exception-handling/">Read on &rarr;</a>
-    </footer>
   
 
 
@@ -229,7 +321,7 @@ posted in
   </header>
 
 
-  <div class="entry-content"><p>Generally creating a specific object (Circle, Square, or Triangle), take its address and cast it to a Shape* (forgetting the specific type of the object), and use that anonymous
+  <div class="entry-content"><p>Generally creating a specific object (Circle, Square, or Triangle), take its address and cast it to a Shape* (forgetting the specific type of the object), and use that anonymous<br>
 pointer in the rest of the program. Act of casting from a more derived type to a base type is called <strong>upcasting</strong>.</p>
 
 </div>
@@ -295,14 +387,13 @@ posted in
 
   <div class="entry-content"><p>Structure defaults to public while class defaults to private. Union can not be a base class as memory of the member variables are overlayed.</p>
 
-<p>Upcasting is a way of taking an address of the object and treating it as the base class.</p>
+<p>Upcasting is a way of taking an address of the object and treating it as the base class.<br>
+&lt;!&#8211; more &#8211;&gt;</p>
 
+<p>VTable holds the list of virtual functions. The size of the class A with one or more virtual function is equal to size(A) + size of void pointer. VPTR is created during the initialisation of the class hence default constructor comes into act.<br>
+typeid is used for down casting, by overcoming the behaviour of dynamic casting.</p>
 </div>
   
-  
-    <footer>
-      <a rel="full-article" href="/c-plus-plus-classes/">Read on &rarr;</a>
-    </footer>
   
 
 
@@ -423,14 +514,18 @@ posted in
   </header>
 
 
-  <div class="entry-content"><p><strong>auto_ptr</strong> is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto_ptr can be copied where as unique_ptr can be moved using std::move().</p>
+  <div class="entry-content"><p><strong>auto_ptr</strong> is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto<em>ptr can be copied where as unique</em>ptr can be moved using std::move(). <br>
+&lt;!&#8211; more &#8211;&gt;</p>
 
+<p>After copy operation is complete the old auto_ptr gets releases (destroyed). </p>
+
+<p>The <strong>unique_ptr</strong> can also handle array. There can not be two auto<em>ptr managing a single objects, of this purpose there is shared</em>ptr.</p>
+
+<p><strong>shared_ptr</strong> objects release ownership on the object they co-own as soon as they themselves are destroyed, or as soon as their value changes either by an assignment operation or by an explicit call to shared<em>ptr::reset. Once all shared</em>ptr objects that share ownership over a pointer have released this ownership, the managed object is deleted (normally by calling ::delete, but a different deleter may be specified on construction).</p>
+
+<p>shared<em>ptr objects can only share ownership by copying their value: If two shared</em>ptr are constructed (or made) from the same (non-shared_ptr) pointer, they will both be owning the pointer without sharing it, causing potential access problems when one of them releases it (deleting its managed object) and leaving the other pointing to an invalid location.</p>
 </div>
   
-  
-    <footer>
-      <a rel="full-article" href="/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/">Read on &rarr;</a>
-    </footer>
   
 
 
