@@ -178,10 +178,71 @@ posted in
 
 <h3>Catch by reference not by value</h3>
 
-<script src='https://gist.github.com/6745383.js?file='></script>
+<figure class='code'><figcaption><span>Catch by reference </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">what</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Base&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">what</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Derived&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="n">f</span><span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="n">Derived</span><span class="p">();</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">f</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Base</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">b</span><span class="p">.</span><span class="n">what</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">f</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Base</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">b</span><span class="p">.</span><span class="n">what</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span> <span class="c1">///:~</span>
+</span><span class='line'><span class="c1">//The output is</span>
+</span><span class='line'><span class="c1">//Base</span>
+</span><span class='line'><span class="c1">//Derived</span>
+</span></code></pre></td></tr></table></div></figure>
 
-
-<p><noscript><pre><code>&lt;html&gt;&lt;body&gt;You are being &lt;a href=&quot;<a href="https://gist.github.com/liteobj/6745383/raw/&amp;quot;&amp;gt;redirected&amp;lt;/a&amp;gt;.&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;">https://gist.github.com/liteobj/6745383/raw/&amp;quot;&amp;gt;redirected&amp;lt;/a&amp;gt;.&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;</a></code></pre></noscript></p>
 </div>
 
 
