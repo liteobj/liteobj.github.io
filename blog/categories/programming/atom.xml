@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Programming | HiPerC]]></title>
   <link href="/blog/categories/programming/atom.xml" rel="self"/>
   <link href="/"/>
-  <updated>2013-09-29T04:22:02+08:00</updated>
+  <updated>2013-09-29T05:13:00+08:00</updated>
   <id>http://hiperc.com/</id>
   <author>
     <name><![CDATA[HiperC]]></name>
@@ -52,40 +52,7 @@
 
 <h3 id="toc_2">Catch by reference not by value</h3>
 
-<p>example<br>
-```cpp Catch by reference<br>
-class Base {<br>
-public:<br>
-    virtual void what() {<br>
-      cout &lt;&lt; &quot;Base&quot; &lt;&lt; endl;<br>
-    }<br>
-};</p>
-
-<p>class Derived : public Base {<br>
-public:<br>
-    void what() {<br>
-        cout &lt;&lt; &quot;Derived&quot; &lt;&lt; endl;<br>
-    }<br>
-};</p>
-
-<p>void f() { throw Derived(); }</p>
-
-<p>int main() {<br>
-    try {<br>
-        f();<br>
-    } catch(Base b) {<br>
-        b.what();<br>
-    }<br>
-    try {<br>
-        f();<br>
-    } catch(Base&amp; b) {<br>
-        b.what();<br>
-    }<br>
-} ///:~<br>
-//The output is<br>
-//Base<br>
-//Derived<br>
-```</p>
+<p><script src='https://gist.github.com/6745383.js?file='></script><noscript><pre><code>&lt;html&gt;&lt;body&gt;You are being &lt;a href=&quot;https://gist.github.com/liteobj/6745383/raw/&quot;&gt;redirected&lt;/a&gt;.&lt;/body&gt;&lt;/html&gt;</code></pre></noscript></p>
 ]]></content>
   </entry>
   
