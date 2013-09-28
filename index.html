@@ -124,6 +124,101 @@
 
   <header>
     
+      <h1 class="entry-title"><a href="/exception-handling/">Exception Handling</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+  
+    <span class="byline author vcard">by <span class="fn">HiperC</span></span>
+  
+
+ - 
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-29T02:31:00+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2013</time> - 
+        
+
+posted in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/c-plus-plus-basic/'>C++ Basic</a>, <a class='category' href='/blog/categories/programming/'>Programming</a>
+  
+</span>
+
+
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Throw</strong> first it creates an object that isn’t there under normal program execution, and of course the constructor is called for that object. Then the object is, in effect, “returned” from the function, even though that object type isn’t normally what the function is designed to return. A simplistic way to think about exception handling is as an alternate return mechanism, although you get into trouble if you take the analogy too far – you can also exit from ordinary scopes by throwing an exception.
+&lt;<more>></p>
+
+<p>The function <strong>unexpected( )</strong> is called when you throw something other than what appears in the exception specification. <strong>set_unexpected( )</strong> is implemented with a pointer to a function, so you can change its behaviour.</p>
+
+<p>If an exception is uncaught, the special function <strong>terminate( )</strong> is automatically called. You can install your own terminate( ) function using the standard <strong>set_terminate( )</strong> function, which returns a pointer to the terminate( ) function you are replacing, so you can restore it later if you want.</p>
+
+<ul>
+<li>exception: The base class for all the exceptions thrown by the  ++ standard library. You can ask what( ) and get a result that can be displayed as a character representation.&ndash; logic_error: Derived from exception. Reports program logic errors, which could presumably be detected before the program executes.&ndash; runtime_error: Derived from exception. Reports runtime errors, which can presumably be detected only when the program executes.</li>
+</ul>
+
+
+<h3>logic_error</h3>
+
+<ul>
+<li>domain_error: Reports violations of a precondition.</li>
+<li>invalid_argument Indicates an invalid argument to the function it’s thrown from.</li>
+<li>length_error: Indicates an attempt to produce an object whose length is greater than or equal to NPOS (the largest representable value of type size_t)</li>
+<li>out_of_range: Reports an out-of-range argument.</li>
+<li>bad_cast: Thrown for executing an invalid dynamic_cast expression in run-time type identification.&ndash; bad_typeid: Reports a null pointer p in an expression typeid(*p). (Again, a run-time type).</li>
+</ul>
+
+
+<h3>runtime_error</h3>
+
+<ul>
+<li>range_error: Reports violation of a postcondition.</li>
+<li>overflow_error: Reports an arithmetic overflow.</li>
+<li>bad_alloc: Reports a failure to allocate storage.</li>
+</ul>
+
+
+<h3>Catch by reference not by value</h3>
+
+<script src='https://gist.github.com/6745383.js?file='></script>
+
+
+<p><noscript><pre><code>&lt;html&gt;&lt;body&gt;You are being &lt;a href=&quot;<a href="https://gist.github.com/liteobj/6745383/raw/&amp;quot;&amp;gt;redirected&amp;lt;/a&amp;gt;.&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;">https://gist.github.com/liteobj/6745383/raw/&amp;quot;&amp;gt;redirected&amp;lt;/a&amp;gt;.&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;</a></code></pre></noscript></p>
+</div>
+  
+  
+
+
+</div>
+
+      </article>
+    
+    
+      <article class="span4">
+        <div class="article-format">
+
+  <header>
+    
       <h1 class="entry-title"><a href="/casting-in-c-plus-plus/">Casting in C++</a></h1>
     
     
@@ -392,6 +487,10 @@ posted in
   <div class="span3">
     <h2>recent posts</h2>
     <ul class="recent_posts">
+      
+        <li>
+          <a href="/exception-handling/">Exception Handling</a>
+        </li>
       
         <li>
           <a href="/casting-in-c-plus-plus/">Casting in C++</a>
