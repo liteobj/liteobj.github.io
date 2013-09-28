@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[HiPerC]]></title>
-  <link href="http://hiperc.com/atom.xml" rel="self"/>
-  <link href="http://hiperc.com/"/>
+  <title><![CDATA[Category: C++ | HiPerC]]></title>
+  <link href="/blog/categories/c-plus-plus/atom.xml" rel="self"/>
+  <link href="/"/>
   <updated>2013-09-28T23:59:17+08:00</updated>
   <id>http://hiperc.com/</id>
   <author>

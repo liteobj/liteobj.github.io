@@ -2,23 +2,27 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://hiperc.com/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/</loc>
-        <lastmod>2013-09-28T14:22:30+08:00</lastmod>
+        <lastmod>2013-09-28T23:59:04+08:00</lastmod>
     </url>
     <url>
         <loc>http://hiperc.com/c-plus-plus-constructor-and-destructor/</loc>
-        <lastmod>2013-09-17T00:16:24+08:00</lastmod>
+        <lastmod>2013-09-28T23:58:44+08:00</lastmod>
     </url>
     <url>
         <loc>http://hiperc.com/c-plus-plus-classes/</loc>
-        <lastmod>2013-09-17T00:16:24+08:00</lastmod>
+        <lastmod>2013-09-28T23:58:24+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://hiperc.com/casting-in-c-plus-plus/</loc>
+        <lastmod>2013-09-28T23:57:55+08:00</lastmod>
     </url>
     <url>
         <loc>http://hiperc.com/blog/archives/</loc>
-        <lastmod>2013-09-28T14:22:30+08:00</lastmod>
+        <lastmod>2013-09-28T23:59:04+08:00</lastmod>
     </url>
     <url>
         <loc>http://hiperc.com/</loc>
-        <lastmod>2013-09-28T14:22:30+08:00</lastmod>
+        <lastmod>2013-09-28T23:59:04+08:00</lastmod>
     </url>
     <url>
         <loc>http://hiperc.com/link-list/</loc>
