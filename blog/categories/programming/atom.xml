@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Programming | HiPerC]]></title>
   <link href="/blog/categories/programming/atom.xml" rel="self"/>
   <link href="/"/>
-  <updated>2013-09-29T03:48:42+08:00</updated>
+  <updated>2013-09-29T03:51:20+08:00</updated>
   <id>http://hiperc.com/</id>
   <author>
     <name><![CDATA[HiperC]]></name>
@@ -60,7 +60,7 @@ class Base {
 public:</p>
 
 <pre><code>virtual void what() {
-    cout &lt;&lt; "Base" &lt;&lt; endl;
+  cout &lt;&lt; "Base" &lt;&lt; endl;
 }
 </code></pre>
 

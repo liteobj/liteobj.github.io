@@ -4,7 +4,7 @@
   <title><![CDATA[HiPerC]]></title>
   <link href="http://hiperc.com/atom.xml" rel="self"/>
   <link href="http://hiperc.com/"/>
-  <updated>2013-09-29T03:48:42+08:00</updated>
+  <updated>2013-09-29T03:51:20+08:00</updated>
   <id>http://hiperc.com/</id>
   <author>
     <name><![CDATA[HiperC]]></name>
@@ -90,7 +90,7 @@
 </pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
 </span><span class='line'><span class="k">public</span><span class="o">:</span>
 </span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">what</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Base&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Base&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">};</span>
 </span><span class='line'>
