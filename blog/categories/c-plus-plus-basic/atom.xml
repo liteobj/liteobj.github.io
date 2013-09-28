@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Basic | HiPerC]]></title>
-  <link href="/blog/categories/basic/atom.xml" rel="self"/>
+  <title><![CDATA[Category: C++ Basic | HiPerC]]></title>
+  <link href="/blog/categories/c-plus-plus-basic/atom.xml" rel="self"/>
   <link href="/"/>
-  <updated>2013-09-29T00:29:19+08:00</updated>
+  <updated>2013-09-29T00:43:15+08:00</updated>
   <id>http://hiperc.com/</id>
   <author>
     <name><![CDATA[HiperC]]></name>
