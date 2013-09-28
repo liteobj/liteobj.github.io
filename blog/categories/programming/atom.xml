@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Programming | HiPerC]]></title>
   <link href="/blog/categories/programming/atom.xml" rel="self"/>
   <link href="/"/>
-  <updated>2013-09-29T03:46:30+08:00</updated>
+  <updated>2013-09-29T03:48:42+08:00</updated>
   <id>http://hiperc.com/</id>
   <author>
     <name><![CDATA[HiperC]]></name>
@@ -54,7 +54,8 @@
 
 <h3>Catch by reference not by value</h3>
 
-<p>``` c++ Catch by reference
+<p>example
+``` c++ Catch by reference
 class Base {
 public:</p>
 
