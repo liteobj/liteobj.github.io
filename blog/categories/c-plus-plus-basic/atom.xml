@@ -4,7 +4,7 @@
   <title><![CDATA[Category: C++ Basic | HiPerC]]></title>
   <link href="/blog/categories/c-plus-plus-basic/atom.xml" rel="self"/>
   <link href="/"/>
-  <updated>2013-09-29T04:15:48+08:00</updated>
+  <updated>2013-09-29T04:22:02+08:00</updated>
   <id>http://hiperc.com/</id>
   <author>
     <name><![CDATA[HiperC]]></name>
@@ -53,7 +53,7 @@
 <h3 id="toc_5">Catch by reference not by value</h3>
 
 <p>example<br>
-``` c++ Catch by reference<br>
+```cpp Catch by reference<br>
 class Base {<br>
 public:<br>
     virtual void what() {<br>
