@@ -4,7 +4,7 @@
   <title><![CDATA[HiPerC]]></title>
   <link href="http://hiperc.com/atom.xml" rel="self"/>
   <link href="http://hiperc.com/"/>
-  <updated>2013-09-30T23:24:48+08:00</updated>
+  <updated>2013-09-30T23:27:01+08:00</updated>
   <id>http://hiperc.com/</id>
   <author>
     <name><![CDATA[HiperC]]></name>
@@ -18,42 +18,50 @@
     <link href="/exception-handling/"/>
     <updated>2013-09-29T02:31:00+08:00</updated>
     <id>/exception-handling</id>
-    <content type="html"><![CDATA[<p><strong>Throw</strong> first it creates an object that isn’t there under normal program execution, and of course the constructor is called for that object. Then the object is, in effect, “returned” from the function, even though that object type isn’t normally what the function is designed to return. A simplistic way to think about exception handling is as an alternate return mechanism, although you get into trouble if you take the analogy too far – you can also exit from ordinary scopes by throwing an exception.
-<!-- more --></p>
+    <content type="html"><![CDATA[<p><strong>Throw</strong> first it creates an object that isn’t there under normal program execution, and of course the constructor is called for that object. Then the object is, in effect, “returned” from the function, even though that object type isn’t normally what the function is designed to return. A simplistic way to think about exception handling is as an alternate return mechanism, although you get into trouble if you take the analogy too far – you can also exit from ordinary scopes by throwing an exception.</p>
+
+<!-- more -->
+
 
 <p>The function <strong>unexpected( )</strong> is called when you throw something other than what appears in the exception specification. <strong>set_unexpected( )</strong> is implemented with a pointer to a function, so you can change its behaviour.</p>
 
-<p>If an exception is uncaught, the special function <strong>terminate( )</strong> is automatically called. You can install your own terminate( ) function using the standard <strong>set_terminate( )</strong> function, which returns a pointer to the terminate( ) function you are replacing, so you can restore it later if you want. </p>
+<p>If an exception is uncaught, the special function <strong>terminate( )</strong> is automatically called. You can install your own terminate( ) function using the standard <strong>set_terminate( )</strong> function, which returns a pointer to the terminate( ) function you are replacing, so you can restore it later if you want.</p>
 
 <ul>
-  <li>exception: The base class for all the exceptions thrown by the  ++ standard library. You can ask what( ) and get a result that can be displayed as a character representation.</li>
-  <li>logic_error: Derived from exception. Reports program logic errors, which could presumably be detected before the program executes.</li>
-  <li>runtime_error: Derived from exception. Reports runtime errors, which can presumably be detected only when the program executes.</li>
+<li>exception: The base class for all the exceptions thrown by the  ++ standard library. You can ask what( ) and get a result that can be displayed as a character representation.&ndash; logic_error: Derived from exception. Reports program logic errors, which could presumably be detected before the program executes.&ndash; runtime_error: Derived from exception. Reports runtime errors, which can presumably be detected only when the program executes.</li>
 </ul>
 
-<h3 id="logicerror">logic_error</h3>
+
+<h3>logic_error</h3>
+
 <ul>
-  <li>domain_error: Reports violations of a precondition.</li>
-  <li>invalid_argument Indicates an invalid argument to the function it’s thrown from.</li>
-  <li>length_error: Indicates an attempt to produce an object whose length is greater than or equal to NPOS (the largest representable value of type size_t)</li>
-  <li>out_of_range: Reports an out-of-range argument.</li>
-  <li>bad_cast: Thrown for executing an invalid dynamic_cast expression in run-time type identification.</li>
-  <li>bad_typeid: Reports a null pointer p in an expression typeid(*p). (Again, a run-time type).</li>
+<li>domain_error: Reports violations of a precondition.</li>
+<li>invalid_argument Indicates an invalid argument to the function it’s thrown from.</li>
+<li>length_error: Indicates an attempt to produce an object whose length is greater than or equal to NPOS (the largest representable value of type size_t)</li>
+<li>out_of_range: Reports an out-of-range argument.</li>
+<li>bad_cast: Thrown for executing an invalid dynamic_cast expression in run-time type identification.&ndash; bad_typeid: Reports a null pointer p in an expression typeid(*p). (Again, a run-time type).</li>
 </ul>
 
-<h3 id="runtimeerror">runtime_error</h3>
+
+<h3>runtime_error</h3>
+
 <ul>
-  <li>range_error: Reports violation of a postcondition.</li>
-  <li>overflow_error: Reports an arithmetic overflow.</li>
-  <li>bad_alloc: Reports a failure to allocate storage.</li>
+<li>range_error: Reports violation of a postcondition.</li>
+<li>overflow_error: Reports an arithmetic overflow.</li>
+<li>bad_alloc: Reports a failure to allocate storage.</li>
 </ul>
 
-<h3 id="catch-by-reference-not-by-value">Catch by reference not by value</h3>
-<script src="https://gist.github.com/6745383.js?file="></script>
-<noscript><pre><code>&lt;html&gt;&lt;body&gt;You are being &lt;a href=&quot;https://gist.github.com/liteobj/6745383/raw/&quot;&gt;redirected&lt;/a&gt;.&lt;/body&gt;&lt;/html&gt;</code></pre></noscript>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">https://gist.github.com/6745383.git</span></code></pre></td></tr></table></div></figure></notextile></div>
+<h3>Catch by reference not by value</h3>
+
+<script src='https://gist.github.com/6745383.js?file='></script>
+
+
+<p><noscript><pre><code>&lt;html&gt;&lt;body&gt;You are being &lt;a href=&quot;<a href="https://gist.github.com/liteobj/6745383/raw/&amp;quot;&amp;gt;redirected&amp;lt;/a&amp;gt;.&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;">https://gist.github.com/liteobj/6745383/raw/&amp;quot;&amp;gt;redirected&amp;lt;/a&amp;gt;.&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;</a></code></pre></noscript></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>https://gist.github.com/6745383.git</span></code></pre></td></tr></table></div></figure>
+
 ]]></content>
   </entry>
   
@@ -66,20 +74,15 @@
 pointer in the rest of the program. Act of casting from a more derived type to a base type is called <strong>upcasting</strong>.</p>
 
 <!-- more -->
+
+
 <ul>
-  <li>
-    <p><strong>static_cast</strong>: For “well-behaved” and “reasonably well behaved”casts, including things you might now do without a cast (e.g., an upcast or automatic type conversion).</p>
-  </li>
-  <li>
-    <p><strong>const_cast</strong>: To cast away const and/or volatile.</p>
-  </li>
-  <li>
-    <p><strong>dynamic_cast</strong>: For type-safe <strong>downcasting</strong>. If casting a Circle* to a Shape* is an upcast, then casting a Shape* to a Circle* is a downcast. However, you know a Circle* is also a Shape<em>,and the compiler freely allows an upcast assignment, but you don’t know that a Shape</em> is necessarily a Circle*, so the compiler doesn’t allow you to perform a downcast assignment without using an explicit cast.</p>
-  </li>
-  <li>
-    <p><strong>reinterpret_cast</strong> To cast to a completely different meaning. The key is that you’ll need to cast back to the original type to use it safely. The type you cast to is typically used only for bit twiddling or some other mysterious purpose. This is the most dangerous of all the casts.</p>
-  </li>
+<li><p><strong>static_cast</strong>: For “well-behaved” and “reasonably well behaved”casts, including things you might now do without a cast (e.g., an upcast or automatic type conversion).</p></li>
+<li><p><strong>const_cast</strong>: To cast away const and/or volatile.</p></li>
+<li><p><strong>dynamic_cast</strong>: For type-safe <strong>downcasting</strong>. If casting a Circle<em> to a Shape</em> is an upcast, then casting a Shape<em> to a Circle</em> is a downcast. However, you know a Circle<em> is also a Shape</em>,and the compiler freely allows an upcast assignment, but you don’t know that a Shape<em> is necessarily a Circle</em>, so the compiler doesn’t allow you to perform a downcast assignment without using an explicit cast.</p></li>
+<li><p><strong>reinterpret_cast</strong> To cast to a completely different meaning. The key is that you’ll need to cast back to the original type to use it safely. The type you cast to is typically used only for bit twiddling or some other mysterious purpose. This is the most dangerous of all the casts.</p></li>
 </ul>
+
 ]]></content>
   </entry>
   
@@ -90,8 +93,10 @@ pointer in the rest of the program. Act of casting from a more derived type to a
     <id>/c-plus-plus-classes</id>
     <content type="html"><![CDATA[<p>Structure defaults to public while class defaults to private. Union can not be a base class as memory of the member variables are overlayed.</p>
 
-<p>Upcasting is a way of taking an address of the object and treating it as the base class.
-<!-- more --></p>
+<p>Upcasting is a way of taking an address of the object and treating it as the base class.</p>
+
+<!-- more -->
+
 
 <p>VTable holds the list of virtual functions. The size of the class A with one or more virtual function is equal to size(A) + size of void pointer. VPTR is created during the initialisation of the class hence default constructor comes into act.
 typeid is used for down casting, by overcoming the behaviour of dynamic casting.</p>
@@ -108,6 +113,8 @@ typeid is used for down casting, by overcoming the behaviour of dynamic casting.
 <p>it’s not good to throw exceptions from within the destructor. During stack unwinding there might exist another exception which is still active.</p>
 
 <!-- more -->
+
+
 <p>Default constructor is called with no arguments. If a virtual function is called within the constructor, the local version of the function is called. And also virtual keyword does not make any sense in contractor but in destructor it is very important to use it to avoid memory leak. Pure virtual destructors will not allow creation of the abstract base class.</p>
 
 <p>Default Copy constructor copies the object bit by bit. If the object contains pointers, both the objects will point to the same memory buffer.</p>
@@ -119,17 +126,18 @@ typeid is used for down casting, by overcoming the behaviour of dynamic casting.
     <link href="/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/"/>
     <updated>2013-09-13T07:13:00+08:00</updated>
     <id>/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr</id>
-    <content type="html"><![CDATA[<p><strong>auto_ptr</strong> is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto_ptr can be copied where as unique_ptr can be moved using std::move(). 
-<!-- more --></p>
+    <content type="html"><![CDATA[<p><strong>auto_ptr</strong> is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto_ptr can be copied where as unique_ptr can be moved using std::move().</p>
 
-<p>After copy operation is complete the old auto_ptr gets releases (destroyed). </p>
+<!-- more -->
+
+
+<p>After copy operation is complete the old auto_ptr gets releases (destroyed).</p>
 
 <p>The <strong>unique_ptr</strong> can also handle array. There can not be two auto_ptr managing a single objects, of this purpose there is shared_ptr.</p>
 
 <p><strong>shared_ptr</strong> objects release ownership on the object they co-own as soon as they themselves are destroyed, or as soon as their value changes either by an assignment operation or by an explicit call to shared_ptr::reset. Once all shared_ptr objects that share ownership over a pointer have released this ownership, the managed object is deleted (normally by calling ::delete, but a different deleter may be specified on construction).</p>
 
 <p>shared_ptr objects can only share ownership by copying their value: If two shared_ptr are constructed (or made) from the same (non-shared_ptr) pointer, they will both be owning the pointer without sharing it, causing potential access problems when one of them releases it (deleting its managed object) and leaving the other pointing to an invalid location.</p>
-
 ]]></content>
   </entry>
   
