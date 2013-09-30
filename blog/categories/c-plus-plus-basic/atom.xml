@@ -4,7 +4,7 @@
   <title><![CDATA[Category: C++ Basic | HiPerC]]></title>
   <link href="/blog/categories/c-plus-plus-basic/atom.xml" rel="self"/>
   <link href="/"/>
-  <updated>2013-09-29T05:36:51+08:00</updated>
+  <updated>2013-09-30T23:15:12+08:00</updated>
   <id>http://hiperc.com/</id>
   <author>
     <name><![CDATA[HiperC]]></name>
@@ -55,6 +55,10 @@
 <h3>Catch by reference not by value</h3>
 
 <p><script src='https://gist.github.com/6745383.js?file='></script><noscript><pre><code>&lt;html&gt;&lt;body&gt;You are being &lt;a href=&quot;https://gist.github.com/liteobj/6745383/raw/&quot;&gt;redirected&lt;/a&gt;.&lt;/body&gt;&lt;/html&gt;</code></pre></noscript></p>
+
+<p><code>
+https://gist.github.com/6745383.git
+</code></p>
 ]]></content>
   </entry>
   
