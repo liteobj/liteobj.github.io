@@ -1,17 +1,20 @@
-/* the humans responsible & colophon */
-/* humanstxt.org */
-
-
 /* TEAM */
-  Owner: Adrian Artiles
-  Site: http://AdrianArtiles.com
-  Twitter: @AdrianArtiles
+Author: HiperC
+Site: 
+Twitter: https://www.twitter.com/thiperc
+Github: https://www.github.com/liteobj
 
-  UX Designer: Adrian Artiles
-  Site: http://AdrianArtiles.com
-  Twitter: @AdrianArtiles
+/* THANKS */
+Stephen Coogan - Developer of theme, Oscailte (https://github.com/coogie/oscailte/)
+  -- Twitter: https://www.twitter.com/coog_ie
+  -- Github: https://www.github.com/coogie
+  -- Website: http://www.coog.ie/
 
-/* SITE */
-  Standards: HTML5, CSS3
-  Components: Modernizr, jQuery
-  Software: Vim
+/* COLOPHON */
+Components:
+  -- inuit.css (http://inuitcss.com/)
+  -- Navigataur (https://github.com/micjamking/Navigataur/)
+  -- Font Awesome (https://fortawesome.github.com/Font-Awesome/)
+Powered by:
+  -- Jekyll
+  -- Octopress

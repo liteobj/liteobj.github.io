@@ -2,38 +2,54 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://hiperc.com/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/</loc>
-        <lastmod>2013-09-29T00:41:48+08:00</lastmod>
+        <lastmod>2013-10-02T00:10:36+08:00</lastmod>
     </url>
     <url>
         <loc>http://hiperc.com/c-plus-plus-constructor-and-destructor/</loc>
-        <lastmod>2013-09-29T00:41:34+08:00</lastmod>
+        <lastmod>2013-10-02T00:10:36+08:00</lastmod>
     </url>
     <url>
         <loc>http://hiperc.com/c-plus-plus-classes/</loc>
-        <lastmod>2013-09-29T00:41:17+08:00</lastmod>
+        <lastmod>2013-10-02T00:10:36+08:00</lastmod>
     </url>
     <url>
         <loc>http://hiperc.com/casting-in-c-plus-plus/</loc>
-        <lastmod>2013-09-29T00:40:50+08:00</lastmod>
+        <lastmod>2013-10-02T00:10:36+08:00</lastmod>
     </url>
     <url>
         <loc>http://hiperc.com/exception-handling/</loc>
-        <lastmod>2013-09-30T23:15:04+08:00</lastmod>
+        <lastmod>2013-10-02T00:10:36+08:00</lastmod>
     </url>
     <url>
         <loc>http://hiperc.com/blog/archives/</loc>
-        <lastmod>2013-09-30T23:15:04+08:00</lastmod>
+        <lastmod>2013-10-02T00:10:36+08:00</lastmod>
     </url>
     <url>
         <loc>http://hiperc.com/blog/categories/</loc>
-        <lastmod>2013-09-29T01:57:18+08:00</lastmod>
+        <lastmod>2013-10-02T00:10:36+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://hiperc.com/blog/</loc>
+        <lastmod>2013-10-02T00:10:36+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://hiperc.com/humans.txt</loc>
+        <lastmod>2013-10-02T00:10:36+08:00</lastmod>
     </url>
     <url>
         <loc>http://hiperc.com/</loc>
-        <lastmod>2013-09-30T23:15:04+08:00</lastmod>
+        <lastmod>2013-10-02T00:10:36+08:00</lastmod>
     </url>
     <url>
         <loc>http://hiperc.com/link-list/</loc>
-        <lastmod>2013-09-17T00:16:24+08:00</lastmod>
+        <lastmod>2013-10-02T00:10:36+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://hiperc.com/robots.txt</loc>
+        <lastmod>2013-10-02T00:10:36+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://hiperc.com/search.html</loc>
+        <lastmod>2013-10-02T00:10:36+08:00</lastmod>
     </url>
 </urlset>
