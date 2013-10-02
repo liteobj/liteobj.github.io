@@ -11,7 +11,7 @@
     <title>HiPerC</title>
     <meta name="author" content="HiperC">
     
-    <meta name="description" content="Search Results $('#search_results').tapir({ 'token': '', 'complete' : function() { document.getElementById('search_loading').style.display="none &hellip;">
+    <meta name="description" content="Search Results $('#search_results').tapir({ 'token': '524b77b570c7430200000008', 'complete' : function() { document.getElementById('search_loading'). &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
@@ -39,6 +39,9 @@
 <ul class="menu pull-right">
   <li><a href="/">Home</a></li>
   <li><a href="/blog/">Blog</a></li>
+  <li><a href="/archives/">Archives</a></li>
+  <li><a href="/categories/">Categories</a></li>
+  <li><a href="/atom.xlm">RSS</a></li>
 </ul>
   </nav>
 </div>
@@ -66,7 +69,7 @@
 </div>
 <script>
          $('#search_results').tapir({
-             'token': '',
+             'token': '524b77b570c7430200000008',
              'complete' : function() { document.getElementById('search_loading').style.display="none"; }
          });
 </script>
@@ -99,7 +102,15 @@
 </section>
 
 
-  <section id="recent-posts" class="aside-module grid__item one-whole lap-one-half">
+  
+<section id="tweet" class="aside-module grid__item one-whole lap-one-half">
+<h1 class="title delta"> Search </h1>
+<form method="get" action="/search.html" id="search">
+    <input name="query" type="text" placeholder="Search..."/>
+</form>
+</section>
+
+<section id="recent-posts" class="aside-module grid__item one-whole lap-one-half">
   <h1 class="title delta">Recent Posts</h1>
   <ul class="divided">
     
@@ -126,22 +137,10 @@
   </ul>
 </section>
 
-<section id="github-repos" class="aside-module grid__item one-whole lap-one-half">
-  <h1 class="title delta">
-    GitHub Repos
-    
-    <small class="pull-right">
-      <a class="btn" href="//github.com/liteobj" title="@liteobj on GitHub" target="_blank">
-        <i class="icon-external-link"></i>
-      </a>
-    </small>
-    
-  </h1>
-  <ul id="gh_repos" class="divided">
-    <li class="loading">
-      <i class="icon-spinner icon-spin"></i>
-    </li>
-  </ul>
+<section id="tweet" class="aside-module grid__item one-whole lap-one-half">
+<h1 class="title delta"> Tweets </h1>
+  <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/tHiPerC" data-widget-id="385213961131401216">Tweets by @tHiPerC</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 </section>
 
 
@@ -159,8 +158,7 @@
   <div class="grid">
     <div class="grid__item">
       <p class="copyright">
-  All content by HiperC and licenced under <a href="//creativecommons.org/licenses/by-nc-sa/3.0/ie/">Creative Commons</a>.<br>
-  Code under <a href="//github.com/coogie/oscailte/blob/master/README.md">MIT Licence</a>.
+  All content by HiperC and licenced under <a href="//creativecommons.org/licenses/by-nc-sa/3.0/ie/">Creative Commons</a>
 </p>
     </div>
   </div>
