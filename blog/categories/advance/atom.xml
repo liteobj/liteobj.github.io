@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Advance | HiPerC]]></title>
+  <link href="http://hiperc.com/blog/categories/advance/atom.xml" rel="self"/>
+  <link href="http://hiperc.com/"/>
+  <updated>2013-10-02T13:22:06+08:00</updated>
+  <id>http://hiperc.com/</id>
+  <author>
+    <name><![CDATA[HiperC]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Smart Pointers: auto_ptr vs unique_ptr vs shared_ptr]]></title>
+    <link href="http://hiperc.com/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/"/>
+    <updated>2013-09-13T07:13:00+08:00</updated>
+    <id>http://hiperc.com/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr</id>
+    <content type="html"><![CDATA[<p><strong>auto_ptr</strong> is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto_ptr can be copied where as unique_ptr can be moved using std::move().</p>
+
+<!-- more -->
+
+
+<p>After copy operation is complete the old auto_ptr gets releases (destroyed).</p>
+
+<p>The <strong>unique_ptr</strong> can also handle array. There can not be two auto_ptr managing a single objects, of this purpose there is shared_ptr.</p>
+
+<p><strong>shared_ptr</strong> objects release ownership on the object they co-own as soon as they themselves are destroyed, or as soon as their value changes either by an assignment operation or by an explicit call to shared_ptr::reset. Once all shared_ptr objects that share ownership over a pointer have released this ownership, the managed object is deleted (normally by calling ::delete, but a different deleter may be specified on construction).</p>
+
+<p>shared_ptr objects can only share ownership by copying their value: If two shared_ptr are constructed (or made) from the same (non-shared_ptr) pointer, they will both be owning the pointer without sharing it, causing potential access problems when one of them releases it (deleting its managed object) and leaving the other pointing to an invalid location.</p>
+]]></content>
+  </entry>
+  
+</feed>
