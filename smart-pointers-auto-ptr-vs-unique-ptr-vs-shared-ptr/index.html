@@ -94,13 +94,13 @@
 
 
 
-  <p><strong>auto_ptr</strong> is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto_ptr can be copied where as unique_ptr can be moved using std::move().</p>
+  <p><strong>auto_ptr</strong> is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto_ptr can be copied where as unique_ptr can be moved using std::move().
+After copy operation is complete the old auto_ptr gets releases (destroyed).</p>
 
-<pre><code>⁃ &lt;!-- more --&gt;
-⁃ 
-</code></pre>
+<!-- more -->
 
-<p>After copy operation is complete the old auto_ptr gets releases (destroyed).</p>
+
+<p></p>
 
 <p>The <strong>unique_ptr</strong> can also handle array. There can not be two auto_ptr managing a single objects, of this purpose there is shared_ptr.</p>
 
