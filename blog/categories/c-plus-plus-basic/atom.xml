@@ -4,7 +4,7 @@
   <title><![CDATA[Category: C++ Basic | HiPerC]]></title>
   <link href="http://hiperc.com/blog/categories/c-plus-plus-basic/atom.xml" rel="self"/>
   <link href="http://hiperc.com/"/>
-  <updated>2013-10-03T00:35:48+08:00</updated>
+  <updated>2013-10-20T12:17:04+08:00</updated>
   <id>http://hiperc.com/</id>
   <author>
     <name><![CDATA[HiperC]]></name>
@@ -12,6 +12,39 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[C++ Variables and its Lifetime]]></title>
+    <link href="http://hiperc.com/c-plus-plus-variables-and-its-lifetime/"/>
+    <updated>2013-10-20T11:19:00+08:00</updated>
+    <id>http://hiperc.com/c-plus-plus-variables-and-its-lifetime</id>
+    <content type="html"><![CDATA[<h3>Global variables</h3>
+
+<p>Global variables are defined outside all function bodies and are available to all parts of the program (even code in other files).</p>
+
+<h3>Local variables</h3>
+
+<p>Local Variables occur within a scope; they are “local” to a function. They are often called automatic variables because they automatically come into being when the scope is entered and automatically go away when the scope closes.
+The <strong>register</strong> keyword tells the compiler &ldquo;Make accesses to this variable as fast as possible.&rdquo; It is often done by placing the variable in a register. There is no guarantee that the variable will be placed in a register or even that the access speed will increase. It is a hint to the compiler.</p>
+
+<!-- more -->
+
+
+<h3>Static</h3>
+
+<p>Incase of static variables the initialisation is performed only the first time the function is called, and the data retains its value between function calls. You may wonder why a global variable isn’t used instead. The beauty of a <strong>static</strong> variable is that it is unavailable outside the scope of the function, so it can’t be inadvertently changed.
+``` c++ Each time func( ) is called in the for loop, it prints a different value.</p>
+
+<h1>include <iostream>using namespace std;void func() {  static int i = 0;  cout &lt;&lt; &ldquo;i = &rdquo; &lt;&lt; ++i &lt;&lt; endl;}int main() {  for(int x = 0; x &lt; 10; x++)    func();}</h1>
+
+<p>```
+When static is applied to a function name or to a variable that is outside of all functions, it means “This name is unavailable outside of this file.” The function name or variable is local to the file; we say it has <strong>file scope</strong>.</p>
+
+<h3>Extern</h3>
+
+<p>It tells the compiler that a variable or a function exists, even if the compiler hasn’t yet seen it in the file currently being compiled. This variable or function may be defined in another file or further down in the current file. <strong>extern won&rsquo;t work</strong> if the variable it is trying to access is declared as static.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Casting in C++]]></title>

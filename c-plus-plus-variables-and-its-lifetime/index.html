@@ -8,14 +8,14 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Category: Programming - HiPerC</title>
+    <title>C++ Variables and its Lifetime - HiPerC</title>
     <meta name="author" content="HiperC">
     
-    <meta name="description" content="Category: Programming">
+    <meta name="description" content="C++ Variables and its Lifetime Oct 20th, 2013 Comments Global variables Global variables are defined outside all function bodies and are available &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
-    <link rel="canonical" href="http://hiperc.comblog/categories/programming">
+    <link rel="canonical" href="http://hiperc.com/c-plus-plus-variables-and-its-lifetime">
     <link href="/favicon.png" rel="icon">
     <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet">
     <link href="//atom.xml" rel="alternate" title="HiPerC" type="application/atom+xml">
@@ -59,215 +59,95 @@
         <div class="grid__item two-thirds lap-one-whole palm-one-whole">
         
 
-          
-<h1 class="title indent">
-  Category: Programming
-</h1>
-<hr class="divider">
+          <article class="post">
+  <header>
+  
+  <h1 class="title indent">C++ Variables and its Lifetime</h1>
+  
+
+  
+  <div class="meta clearfix">
+    
 
 
-<div id="archive-list">
+
+
+
+
+
+
   
-  
+
+
+<time class="pull-left" datetime="2013-10-20T11:19:00+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 20<span>th</span>, 2013</time>
+    
   
     
-    <h2>2013</h2>
-  
-    <article>
-      
-
-<div class="grid">
-
-  <div class="grid__item one-fifth palm-one-whole">
-    <time datetime="2013-10-20T11:19:00+08:00" pubdate>
-      <span class='month'>Oct</span> <span class='day'>20</span>
-    </time>
+      <a class="pull-right" href="#disqus_thread">
+        Comments <i class="icon-comment"></i>
+      </a>
+    
   </div>
-  <div class="grid__item four-fifths palm-one-whole">
-    <h1 class="gamma"><a href="/c-plus-plus-variables-and-its-lifetime/"><i class="icon-file-text"></i>  C++ Variables and its Lifetime</a></h1>
-    
-    <footer class="meta">
-      <i class="icon-tags"></i>
-      <ul class="tags unstyled pull-left">
-      <li><a class='category' href='/blog/categories/c-plus-plus-basic/'>C++ Basic</a>, <a class='category' href='/blog/categories/programming/'>Programming</a></li>
-      </ul>
-    </footer>
-    
-    <hr class="divider">
-  </div>
+  
+</header>
 
+
+
+
+  <h3>Global variables</h3>
+
+<p>Global variables are defined outside all function bodies and are available to all parts of the program (even code in other files).</p>
+
+<h3>Local variables</h3>
+
+<p>Local Variables occur within a scope; they are “local” to a function. They are often called automatic variables because they automatically come into being when the scope is entered and automatically go away when the scope closes.
+The <strong>register</strong> keyword tells the compiler &ldquo;Make accesses to this variable as fast as possible.&rdquo; It is often done by placing the variable in a register. There is no guarantee that the variable will be placed in a register or even that the access speed will increase. It is a hint to the compiler.</p>
+
+<!-- more -->
+
+
+<h3>Static</h3>
+
+<p>Incase of static variables the initialisation is performed only the first time the function is called, and the data retains its value between function calls. You may wonder why a global variable isn’t used instead. The beauty of a <strong>static</strong> variable is that it is unavailable outside the scope of the function, so it can’t be inadvertently changed.</p>
+
+<figure class='code'><figcaption><span>Each time func( ) is called in the for loop, it prints a different value.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class='line'><span class="kt">void</span> <span class="n">func</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">static</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;i = &quot;</span> <span class="o">&lt;&lt;</span> <span class="o">++</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">func</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When static is applied to a function name or to a variable that is outside of all functions, it means “This name is unavailable outside of this file.” The function name or variable is local to the file; we say it has <strong>file scope</strong>.</p>
+
+<h3>Extern</h3>
+
+<p>It tells the compiler that a variable or a function exists, even if the compiler hasn’t yet seen it in the file currently being compiled. This variable or function may be defined in another file or further down in the current file. <strong>extern won&rsquo;t work</strong> if the variable it is trying to access is declared as static.</p>
+
+
+</article>
+
+ 
+<section id="disqus">
+  <h1 class="indent title">Comments</h1>
+  <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-    </article>
-  
-  
-  
-    <article>
-      
-
-<div class="grid">
-
-  <div class="grid__item one-fifth palm-one-whole">
-    <time datetime="2013-10-10T23:49:00+08:00" pubdate>
-      <span class='month'>Oct</span> <span class='day'>10</span>
-    </time>
-  </div>
-  <div class="grid__item four-fifths palm-one-whole">
-    <h1 class="gamma"><a href="/processes-threads-and-pthreads/"><i class="icon-file-text"></i>  PROCESSES THREADS AND PTHREADS</a></h1>
-    
-    <footer class="meta">
-      <i class="icon-tags"></i>
-      <ul class="tags unstyled pull-left">
-      <li><a class='category' href='/blog/categories/advance/'>Advance</a>, <a class='category' href='/blog/categories/programming/'>Programming</a></li>
-      </ul>
-    </footer>
-    
-    <hr class="divider">
-  </div>
-
-</div>
-    </article>
-  
-  
-  
-    <article>
-      
-
-<div class="grid">
-
-  <div class="grid__item one-fifth palm-one-whole">
-    <time datetime="2013-09-29T02:31:00+08:00" pubdate>
-      <span class='month'>Sep</span> <span class='day'>29</span>
-    </time>
-  </div>
-  <div class="grid__item four-fifths palm-one-whole">
-    <h1 class="gamma"><a href="/exception-handling/"><i class="icon-file-text"></i>  Exception Handling</a></h1>
-    
-    <footer class="meta">
-      <i class="icon-tags"></i>
-      <ul class="tags unstyled pull-left">
-      <li><a class='category' href='/blog/categories/intermediate/'>Intermediate</a>, <a class='category' href='/blog/categories/programming/'>Programming</a></li>
-      </ul>
-    </footer>
-    
-    <hr class="divider">
-  </div>
-
-</div>
-    </article>
-  
-  
-  
-    <article>
-      
-
-<div class="grid">
-
-  <div class="grid__item one-fifth palm-one-whole">
-    <time datetime="2013-09-28T23:44:00+08:00" pubdate>
-      <span class='month'>Sep</span> <span class='day'>28</span>
-    </time>
-  </div>
-  <div class="grid__item four-fifths palm-one-whole">
-    <h1 class="gamma"><a href="/casting-in-c-plus-plus/"><i class="icon-file-text"></i>  Casting in C++</a></h1>
-    
-    <footer class="meta">
-      <i class="icon-tags"></i>
-      <ul class="tags unstyled pull-left">
-      <li><a class='category' href='/blog/categories/c-plus-plus-basic/'>C++ Basic</a>, <a class='category' href='/blog/categories/programming/'>Programming</a></li>
-      </ul>
-    </footer>
-    
-    <hr class="divider">
-  </div>
-
-</div>
-    </article>
-  
-  
-  
-    <article>
-      
-
-<div class="grid">
-
-  <div class="grid__item one-fifth palm-one-whole">
-    <time datetime="2013-09-13T07:17:00+08:00" pubdate>
-      <span class='month'>Sep</span> <span class='day'>13</span>
-    </time>
-  </div>
-  <div class="grid__item four-fifths palm-one-whole">
-    <h1 class="gamma"><a href="/c-plus-plus-classes/"><i class="icon-file-text"></i>  C++ Classes</a></h1>
-    
-    <footer class="meta">
-      <i class="icon-tags"></i>
-      <ul class="tags unstyled pull-left">
-      <li><a class='category' href='/blog/categories/c-plus-plus-basic/'>C++ Basic</a>, <a class='category' href='/blog/categories/programming/'>Programming</a></li>
-      </ul>
-    </footer>
-    
-    <hr class="divider">
-  </div>
-
-</div>
-    </article>
-  
-  
-  
-    <article>
-      
-
-<div class="grid">
-
-  <div class="grid__item one-fifth palm-one-whole">
-    <time datetime="2013-09-13T07:16:00+08:00" pubdate>
-      <span class='month'>Sep</span> <span class='day'>13</span>
-    </time>
-  </div>
-  <div class="grid__item four-fifths palm-one-whole">
-    <h1 class="gamma"><a href="/c-plus-plus-constructor-and-destructor/"><i class="icon-file-text"></i>  C++ Constructor and Destructor</a></h1>
-    
-    <footer class="meta">
-      <i class="icon-tags"></i>
-      <ul class="tags unstyled pull-left">
-      <li><a class='category' href='/blog/categories/c-plus-plus-basic/'>C++ Basic</a>, <a class='category' href='/blog/categories/programming/'>Programming</a></li>
-      </ul>
-    </footer>
-    
-    <hr class="divider">
-  </div>
-
-</div>
-    </article>
-  
-  
-  
-    <article>
-      
-
-<div class="grid">
-
-  <div class="grid__item one-fifth palm-one-whole">
-    <time datetime="2013-09-13T07:13:00+08:00" pubdate>
-      <span class='month'>Sep</span> <span class='day'>13</span>
-    </time>
-  </div>
-  <div class="grid__item four-fifths palm-one-whole">
-    <h1 class="gamma"><a href="/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/"><i class="icon-file-text"></i>  Smart Pointers: auto_ptr vs unique_ptr vs shared_ptr</a></h1>
-    
-    <footer class="meta">
-      <i class="icon-tags"></i>
-      <ul class="tags unstyled pull-left">
-      <li><a class='category' href='/blog/categories/advance/'>Advance</a>, <a class='category' href='/blog/categories/programming/'>Programming</a></li>
-      </ul>
-    </footer>
-    
-    <hr class="divider">
-  </div>
-
-</div>
-    </article>
-  
-</div>
+</section>
 
 
         
@@ -385,7 +265,10 @@
       var disqus_shortname = 'hiperc';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://hiperc.com/c-plus-plus-variables-and-its-lifetime/';
+        var disqus_url = 'http://hiperc.com/c-plus-plus-variables-and-its-lifetime/';
+        var disqus_script = 'embed.js';
       
     (function() {
             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

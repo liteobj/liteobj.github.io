@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Advance | HiPerC]]></title>
   <link href="http://hiperc.com/blog/categories/advance/atom.xml" rel="self"/>
   <link href="http://hiperc.com/"/>
-  <updated>2013-10-03T00:35:48+08:00</updated>
+  <updated>2013-10-20T12:17:04+08:00</updated>
   <id>http://hiperc.com/</id>
   <author>
     <name><![CDATA[HiperC]]></name>
@@ -14,14 +14,24 @@
 
   
   <entry>
+    <title type="html"><![CDATA[PROCESSES THREADS AND PTHREADS]]></title>
+    <link href="http://hiperc.com/processes-threads-and-pthreads/"/>
+    <updated>2013-10-10T23:49:00+08:00</updated>
+    <id>http://hiperc.com/processes-threads-and-pthreads</id>
+    <content type="html"><![CDATA[<p>Coming Soon</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Smart Pointers: auto_ptr vs unique_ptr vs shared_ptr]]></title>
     <link href="http://hiperc.com/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/"/>
     <updated>2013-09-13T07:13:00+08:00</updated>
     <id>http://hiperc.com/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr</id>
     <content type="html"><![CDATA[<p><strong>auto_ptr</strong> is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto_ptr can be copied where as unique_ptr can be moved using std::move().</p>
 
-<!-- more -->
-
+<pre><code>⁃ &lt;!-- more --&gt;
+⁃ 
+</code></pre>
 
 <p>After copy operation is complete the old auto_ptr gets releases (destroyed).</p>
 

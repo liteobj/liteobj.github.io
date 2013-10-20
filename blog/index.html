@@ -11,7 +11,7 @@
     <title>HiPerC</title>
     <meta name="author" content="HiperC">
     
-    <meta name="description" content="Exception Handling Sep 29th, 2013 Intermediate, Programming Comments Throw first it creates an object that isn’t there under normal program &hellip;">
+    <meta name="description" content="C++ Variables and its Lifetime Oct 20th, 2013 C++ Basic, Programming Comments Global variables Global variables are defined outside all function &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
@@ -61,6 +61,121 @@
 
           
 
+
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/c-plus-plus-variables-and-its-lifetime/">C++ Variables and its Lifetime</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2013-10-20T11:19:00+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 20<span>th</span>, 2013</time>
+    
+  
+  <div class="pull-left">
+    <i class="icon-tags"></i>
+    <ul class="tags unstyled">
+    
+      <li><a class='category' href='/blog/categories/c-plus-plus-basic/'>C++ Basic</a>, <a class='category' href='/blog/categories/programming/'>Programming</a></a></li>
+    </ul>
+  </div>
+  
+    
+      <a class="pull-right" href="http://hiperc.com/c-plus-plus-variables-and-its-lifetime/#disqus_thread">
+        Comments <i class="icon-comment"></i>
+      </a>
+    
+  </div>
+  
+</header>
+
+
+
+
+<div class="entry-content clearfix">
+  <h3>Global variables</h3>
+
+<p>Global variables are defined outside all function bodies and are available to all parts of the program (even code in other files).</p>
+
+<h3>Local variables</h3>
+
+<p>Local Variables occur within a scope; they are “local” to a function. They are often called automatic variables because they automatically come into being when the scope is entered and automatically go away when the scope closes.
+The <strong>register</strong> keyword tells the compiler &ldquo;Make accesses to this variable as fast as possible.&rdquo; It is often done by placing the variable in a register. There is no guarantee that the variable will be placed in a register or even that the access speed will increase. It is a hint to the compiler.</p>
+
+
+  <a class="btn pull-right" href="/c-plus-plus-variables-and-its-lifetime/">Read on &rarr;</a>
+</div>
+
+  </article>
+  <hr>
+
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/processes-threads-and-pthreads/">PROCESSES THREADS AND PTHREADS</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2013-10-10T23:49:00+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 10<span>th</span>, 2013</time>
+    
+  
+  <div class="pull-left">
+    <i class="icon-tags"></i>
+    <ul class="tags unstyled">
+    
+      <li><a class='category' href='/blog/categories/advance/'>Advance</a>, <a class='category' href='/blog/categories/programming/'>Programming</a></a></li>
+    </ul>
+  </div>
+  
+    
+      <a class="pull-right" href="http://hiperc.com/processes-threads-and-pthreads/#disqus_thread">
+        Comments <i class="icon-comment"></i>
+      </a>
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p>Coming Soon</p>
+
+
+  </article>
+  <hr>
 
   
   <article class="listing">
@@ -337,12 +452,20 @@ pointer in the rest of the program. Act of casting from a more derived type to a
 
 
 
-<div class="entry-content clearfix">
   <p><strong>auto_ptr</strong> is a class template which can store pointer to object and ensures that the object is destroyed when the control goes out of scope. auto_ptr can be copied where as unique_ptr can be moved using std::move().</p>
 
+<pre><code>⁃ &lt;!-- more --&gt;
+⁃ 
+</code></pre>
 
-  <a class="btn pull-right" href="/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/">Read on &rarr;</a>
-</div>
+<p>After copy operation is complete the old auto_ptr gets releases (destroyed).</p>
+
+<p>The <strong>unique_ptr</strong> can also handle array. There can not be two auto_ptr managing a single objects, of this purpose there is shared_ptr.</p>
+
+<p><strong>shared_ptr</strong> objects release ownership on the object they co-own as soon as they themselves are destroyed, or as soon as their value changes either by an assignment operation or by an explicit call to shared_ptr::reset. Once all shared_ptr objects that share ownership over a pointer have released this ownership, the managed object is deleted (normally by calling ::delete, but a different deleter may be specified on construction).</p>
+
+<p>shared_ptr objects can only share ownership by copying their value: If two shared_ptr are constructed (or made) from the same (non-shared_ptr) pointer, they will both be owning the pointer without sharing it, causing potential access problems when one of them releases it (deleting its managed object) and leaving the other pointing to an invalid location.</p>
+
 
   </article>
   <hr>
@@ -387,6 +510,14 @@ pointer in the rest of the program. Act of casting from a more derived type to a
   <ul class="divided">
     
       <li class="post">
+        <a href="/c-plus-plus-variables-and-its-lifetime/"> C++ Variables and its Lifetime </a>
+      </li>
+    
+      <li class="post">
+        <a href="/processes-threads-and-pthreads/"> PROCESSES THREADS AND PTHREADS </a>
+      </li>
+    
+      <li class="post">
         <a href="/exception-handling/"> Exception Handling </a>
       </li>
     
@@ -396,14 +527,6 @@ pointer in the rest of the program. Act of casting from a more derived type to a
     
       <li class="post">
         <a href="/c-plus-plus-classes/"> C++ Classes </a>
-      </li>
-    
-      <li class="post">
-        <a href="/c-plus-plus-constructor-and-destructor/"> C++ Constructor and Destructor </a>
-      </li>
-    
-      <li class="post">
-        <a href="/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/"> Smart Pointers: auto_ptr vs unique_ptr vs shared_ptr </a>
       </li>
     
   </ul>
