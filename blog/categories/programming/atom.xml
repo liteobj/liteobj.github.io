@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Programming | HiPerC]]></title>
   <link href="http://hiperc.com/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://hiperc.com/"/>
-  <updated>2013-10-20T12:20:00+08:00</updated>
+  <updated>2013-10-20T20:52:56+08:00</updated>
   <id>http://hiperc.com/</id>
   <author>
     <name><![CDATA[HiperC]]></name>
@@ -43,6 +43,18 @@ When static is applied to a function name or to a variable that is outside of al
 <h3>Extern</h3>
 
 <p>It tells the compiler that a variable or a function exists, even if the compiler hasn’t yet seen it in the file currently being compiled. This variable or function may be defined in another file or further down in the current file. <strong>extern won&rsquo;t work</strong> if the variable it is trying to access is declared as static.</p>
+
+<h3>Constant</h3>
+
+<p>Any type, built-in or user-defined, may be defined as const. If you define something as const and then attempt to modify it, the compiler will generate an error.</p>
+
+<h3>Volatile</h3>
+
+<p>Whereas the qualifier const tells the compiler “This never changes” (which allows the compiler to perform extra optimisations), the qualifier volatile tells the compiler “You never know when this will change,” and prevents the compiler from performing any optimisations based on the stability of that variable.</p>
+
+<p>volatile variable is always read whenever its value is required, even if it was just read the line before.A special case of some storage being “outside the control of your code” is in a multithreaded program. If you’re watching a particular flag that is modified by another thread or process, that flag should be volatile so the compiler doesn’t make the assumption that it can optimise away multiple reads of the flag.</p>
+
+<p>Linkage describes this storage as it is seen by the linker. <strong>Internal linkage</strong> means that storage is created to represent the identifier only for the file being compiled. <strong>External linkage</strong> means that a single piece of storage is created to represent the identifier for all files being compiled.</p>
 ]]></content>
   </entry>
   
