@@ -8,14 +8,14 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Category: Advance - HiPerC</title>
+    <title>C++ Memory Management - HiPerC</title>
     <meta name="author" content="HiperC">
     
-    <meta name="description" content="Category: Advance">
+    <meta name="description" content="C++ Memory Management Oct 27th, 2013 Comments C++ has several distinct memory areas where objects and non-object values may be stored, and each area &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
-    <link rel="canonical" href="http://hiperc.comblog/categories/advance">
+    <link rel="canonical" href="http://hiperc.com/c-plus-plus-memory-management">
     <link href="/favicon.png" rel="icon">
     <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet">
     <link href="//atom.xml" rel="alternate" title="HiPerC" type="application/atom+xml">
@@ -59,75 +59,72 @@
         <div class="grid__item two-thirds lap-one-whole palm-one-whole">
         
 
-          
-<h1 class="title indent">
-  Category: Advance
-</h1>
-<hr class="divider">
+          <article class="post">
+  <header>
+  
+  <h1 class="title indent">C++ Memory Management</h1>
+  
+
+  
+  <div class="meta clearfix">
+    
 
 
-<div id="archive-list">
+
+
+
+
+
+
   
-  
+
+
+<time class="pull-left" datetime="2013-10-27T14:19:00+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 27<span>th</span>, 2013</time>
+    
   
     
-    <h2>2013</h2>
-  
-    <article>
-      
-
-<div class="grid">
-
-  <div class="grid__item one-fifth palm-one-whole">
-    <time datetime="2013-10-10T23:49:00+08:00" pubdate>
-      <span class='month'>Oct</span> <span class='day'>10</span>
-    </time>
+      <a class="pull-right" href="#disqus_thread">
+        Comments <i class="icon-comment"></i>
+      </a>
+    
   </div>
-  <div class="grid__item four-fifths palm-one-whole">
-    <h1 class="gamma"><a href="/processes-threads-and-pthreads/"><i class="icon-file-text"></i>  PROCESSES THREADS AND PTHREADS</a></h1>
-    
-    <footer class="meta">
-      <i class="icon-tags"></i>
-      <ul class="tags unstyled pull-left">
-      <li><a class='category' href='/blog/categories/advance/'>Advance</a>, <a class='category' href='/blog/categories/programming/'>Programming</a></li>
-      </ul>
-    </footer>
-    
-    <hr class="divider">
-  </div>
+  
+</header>
 
+
+
+
+  <p>C++ has several distinct memory areas where objects and non-object values may be stored, and each area has different characteristics.</p>
+
+<h3>Const Data</h3>
+
+<p>The const data area stores string literals and other data whose values are known at compile time.  No objects of class type can exist in this area. All data in this area is available during the entire lifetime of the program. Further, all of this data is read-only, and the results of trying to modify it are undefined. This is in part because even the underlying storage format is subject to arbitrary optimization by the implementation.  For example, a particular compiler may store string literals in overlapping objects if it wants to.</p>
+
+<h3>Stack</h3>
+
+<p>The stack stores automatic variables. Typically allocation is much faster than for dynamic storage (heap or free store) because a memory allocation involves only pointer increment rather than more complex management. Objects are constructed immediately after memory is allocated and destroyed immediately before memory is deallocated, so there is no opportunity for programmers to directly manipulate allocated but uninitialized stack space (barring willful tampering using explicit dtors and placement new).</p>
+
+<h3>Free Store</h3>
+
+<p>The free store is one of the two dynamic memory areas, allocated/freed by new/delete.  Object lifetime can be less than the time the storage is allocated; that is, free store objects can have memory allocated without being immediately initialized, and can be destroyed without the memory being immediately deallocated.  During the period when the storage is allocated but outside the object&rsquo;s lifetime, the storage may be accessed and manipulated through a void* but none of the proto-object&rsquo;s nonstatic members or member functions may be accessed, have their addresses taken, or be otherwise manipulated.</p>
+
+<h3>Heap</h3>
+
+<p>The heap is the other dynamic memory area, allocated/freed by malloc/free and their variants. Note that while the default global new and delete might be implemented in terms of malloc and free by a particular compiler, the heap is not the same as free store and memory allocated in one area cannot be safely deallocated in the other. Memory allocated from the heap can be used for objects of class type by placement-new construction and explicit destruction.  If so used, the notes about free store object lifetime apply similarly here.</p>
+
+<h3>Global/Static</h3>
+
+<p>Global or static variables and objects have their storage allocated at program startup, but may not be initialized until after the program has begun executing.  For instance, a static variable in a function is initialized only the first time program execution passes through its definition.  The order of initialization of global variables across translation units is not defined, and special care is needed to manage dependencies between global objects (including class statics).  As always, uninitialized proto- objects&#8217; storage may be accessed and manipulated through a void* but no nonstatic members or member functions may be used or referenced outside the object&rsquo;s actual lifetime.</p>
+
+
+</article>
+
+ 
+<section id="disqus">
+  <h1 class="indent title">Comments</h1>
+  <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-    </article>
-  
-  
-  
-    <article>
-      
-
-<div class="grid">
-
-  <div class="grid__item one-fifth palm-one-whole">
-    <time datetime="2013-09-13T07:13:00+08:00" pubdate>
-      <span class='month'>Sep</span> <span class='day'>13</span>
-    </time>
-  </div>
-  <div class="grid__item four-fifths palm-one-whole">
-    <h1 class="gamma"><a href="/smart-pointers-auto-ptr-vs-unique-ptr-vs-shared-ptr/"><i class="icon-file-text"></i>  Smart Pointers: auto_ptr vs unique_ptr vs shared_ptr</a></h1>
-    
-    <footer class="meta">
-      <i class="icon-tags"></i>
-      <ul class="tags unstyled pull-left">
-      <li><a class='category' href='/blog/categories/advance/'>Advance</a>, <a class='category' href='/blog/categories/programming/'>Programming</a></li>
-      </ul>
-    </footer>
-    
-    <hr class="divider">
-  </div>
-
-</div>
-    </article>
-  
-</div>
+</section>
 
 
         
@@ -245,7 +242,10 @@
       var disqus_shortname = 'hiperc';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://hiperc.com/c-plus-plus-memory-management/';
+        var disqus_url = 'http://hiperc.com/c-plus-plus-memory-management/';
+        var disqus_script = 'embed.js';
       
     (function() {
             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
