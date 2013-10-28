@@ -8,14 +8,14 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Reference - HiPerC</title>
+    <title>Spin Lock - HiPerC</title>
     <meta name="author" content="HiperC">
     
-    <meta name="description" content="Reference Design Patterns Vince Huston http://www.vincehuston.org/dp Multi-threading Lock Free programming http://preshing.com C++ Tips and FAQ C++ &hellip;">
+    <meta name="description" content="Spin Lock Oct 28th, 2013 Comments A semaphore will nowadays typically wrap sys_futex under Linux (optionally with a spinlock that exits after a few &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
-    <link rel="canonical" href="http://hiperc.com/reference">
+    <link rel="canonical" href="http://hiperc.com/spin-lock">
     <link href="/favicon.png" rel="icon">
     <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet">
     <link href="//atom.xml" rel="alternate" title="HiPerC" type="application/atom+xml">
@@ -59,49 +59,101 @@
         <div class="grid__item two-thirds lap-one-whole palm-one-whole">
         
 
-          
-<h1 class="title indent">
-  Reference
-</h1>
-<hr class="divider">
+          <article class="post">
+  <header>
+  
+  <h1 class="title indent">Spin Lock</h1>
+  
+
+  
+  <div class="meta clearfix">
+    
 
 
-<h4>Design Patterns</h4>
-
-<ul>
-<li>Vince Huston <code>http://www.vincehuston.org/dp</code> <a href="http://www.vincehuston.org/dp/"><i class="icon-external-link-sign"></i></a></li>
-</ul>
 
 
-<h4>Multi-threading</h4>
-
-<ul>
-<li>Lock Free programming <code>http://preshing.com</code> <a href="http://preshing.com"><i class="icon-external-link-sign"></i></a></li>
-</ul>
 
 
-<h4>C++ Tips and FAQ</h4>
-
-<ul>
-<li>C++ Pitfalls <code>http://www.horstmann.com/cpp/pitfalls.html</code> <a href="http://www.horstmann.com/cpp/pitfalls.html"><i class="icon-external-link-sign"></i></a></li>
-<li>C++ keyword Reference &lsquo;<a href="http://en.cppreference.com/w/cpp/keyword">http://en.cppreference.com/w/cpp/keyword</a>&rsquo; <a href="http://en.cppreference.com/w/cpp/keyword"><i class="icon-external-link-sign"></i></a></li>
-</ul>
 
 
-<h4>Algorithm</h4>
-
-<ul>
-<li>Big O cheat sheet <code>http://bigocheatsheet.com</code> <a href="http://bigocheatsheet.com"><i class="icon-external-link-sign"></i></a></li>
-</ul>
+  
 
 
-<h4>Operating System, CPU and Memory</h4>
+<time class="pull-left" datetime="2013-10-28T22:50:00+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 28<span>th</span>, 2013</time>
+    
+  
+    
+      <a class="pull-right" href="#disqus_thread">
+        Comments <i class="icon-comment"></i>
+      </a>
+    
+  </div>
+  
+</header>
 
-<ul>
-<li>Intel 64 instruction set reference <code>http://siyobik.info.gf/main/reference</code> <a href="http://siyobik.info.gf/main/reference" title="Unofficial reference"><i class="icon-external-link-sign"></i></a></li>
-<li>Memory-mapped I/O <code>http://en.wikipedia.org/wiki/Memory-ma ..</code> <a href="http://en.wikipedia.org/wiki/Memory-mapped_I/O"><i class="icon-external-link-sign"></i></a></li>
-</ul>
 
+
+
+  <p>A <strong>semaphore</strong> will nowadays typically wrap <code>sys_futex</code> under Linux (optionally with a spinlock that exits after a few attempts). A <strong>mutex</strong>, in its most fundamental form, is just an integer in memory. This memory can have a few different values depending on the that state of the mutex. Mutex uses <code>test-and-set</code> mechanism that provides no support for a thread to wait on the value. A <strong>spinlock</strong> is typically implemented using atomic operations, and without using anything provided by the operating system.</p>
+
+<!-- more -->
+
+
+<p>In GCC the spinlock can be written in the following way.</p>
+
+<figure class='code'><figcaption><span>Spin lock</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">void</span> <span class="n">spin_lock</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">__sync_bool_compare_and_swap</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="n">spin_unlock</span><span class="p">(</span><span class="kt">int</span> <span class="k">volatile</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">asm</span> <span class="k">volatile</span> <span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span> <span class="c1">// acts as a memory barrier.</span>
+</span><span class='line'>    <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Further optimisation to the above code results in</p>
+
+<figure class='code'><figcaption><span>Spin lock optimised</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">void</span> <span class="n">spin_lock</span><span class="p">(</span><span class="kt">int</span> <span class="k">volatile</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">__sync_bool_compare_and_swap</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">while</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">)</span> <span class="n">_mm_pause</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here the <code>pause</code> instruction is vital for performance on HyperThreading CPUs when you&rsquo;ve got code that spins like this &mdash; it lets the second thread execute while the first thread is spinning. On CPUs which don&rsquo;t support <code>pause</code>, it is treated as a <code>nop</code>.</p>
+
+
+</article>
+
+ 
+<section id="disqus">
+  <h1 class="indent title">Comments</h1>
+  <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
 
 
         
@@ -220,8 +272,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://hiperc.com/reference/index.html';
-        var disqus_url = 'http://hiperc.com/reference/index.html';
+        var disqus_identifier = 'http://hiperc.com/spin-lock/';
+        var disqus_url = 'http://hiperc.com/spin-lock/';
         var disqus_script = 'embed.js';
       
     (function() {

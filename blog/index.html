@@ -11,7 +11,7 @@
     <title>HiPerC</title>
     <meta name="author" content="HiperC">
     
-    <meta name="description" content="C++ Memory Management Oct 27th, 2013 Intermediate, Programming Comments C++ has several distinct memory areas where objects and non-object values &hellip;">
+    <meta name="description" content="Spin Lock Oct 28th, 2013 Advance, Programming Comments A semaphore will nowadays typically wrap sys_futex under Linux (optionally with a spinlock &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
@@ -61,6 +61,62 @@
 
           
 
+
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/spin-lock/">Spin Lock</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2013-10-28T22:50:00+08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Oct 28<span>th</span>, 2013</time>
+    
+  
+  <div class="pull-left">
+    <i class="icon-tags"></i>
+    <ul class="tags unstyled">
+    
+      <li><a class='category' href='/blog/categories/advance/'>Advance</a>, <a class='category' href='/blog/categories/programming/'>Programming</a></a></li>
+    </ul>
+  </div>
+  
+    
+      <a class="pull-right" href="http://hiperc.com/spin-lock/#disqus_thread">
+        Comments <i class="icon-comment"></i>
+      </a>
+    
+  </div>
+  
+</header>
+
+
+
+
+<div class="entry-content clearfix">
+  <p>A <strong>semaphore</strong> will nowadays typically wrap <code>sys_futex</code> under Linux (optionally with a spinlock that exits after a few attempts). A <strong>mutex</strong>, in its most fundamental form, is just an integer in memory. This memory can have a few different values depending on the that state of the mutex. Mutex uses <code>test-and-set</code> mechanism that provides no support for a thread to wait on the value. A <strong>spinlock</strong> is typically implemented using atomic operations, and without using anything provided by the operating system.</p>
+
+
+  <a class="btn pull-right" href="/spin-lock/">Read on &rarr;</a>
+</div>
+
+  </article>
+  <hr>
 
   
   <article class="listing">
@@ -575,6 +631,10 @@ After copy operation is complete the old auto_ptr gets releases (destroyed).</p>
   <ul class="divided">
     
       <li class="post">
+        <a href="/spin-lock/"> Spin Lock </a>
+      </li>
+    
+      <li class="post">
         <a href="/c-plus-plus-memory-management/"> C++ Memory Management </a>
       </li>
     
@@ -588,10 +648,6 @@ After copy operation is complete the old auto_ptr gets releases (destroyed).</p>
     
       <li class="post">
         <a href="/exception-handling/"> Exception Handling </a>
-      </li>
-    
-      <li class="post">
-        <a href="/casting-in-c-plus-plus/"> Casting in C++ </a>
       </li>
     
   </ul>
