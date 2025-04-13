@@ -1,9 +1,8 @@
 import os
 from fastapi import FastAPI, Request
 from sse_starlette.sse import EventSourceResponse
-from mcp.core import MCPRegistry
+from mcp import MCPServer, MCPClient, ToolCall, AgentCall
 from langgraph.graph import END, StateGraph
-from langgraph.prebuilt import ToolNode
 import httpx
 import openai
 
@@ -13,11 +12,15 @@ POLYGON_API_KEY = os.getenv("POLYGON_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
-# === App and Registry ===
+# === App and MCP Server ===
 app = FastAPI()
-mcp_registry = MCPRegistry()
+mcp_server = MCPServer()
+app.include_router(mcp_server.router)
 
-# === Live Tools ===
+# === MCP Client (loopback) ===
+mcp_client = MCPClient(base_url="http://localhost:8000")
+
+# === Real Tools ===
 
 async def live_news_tool(input: dict) -> dict:
     topic = input.get("topic", "market")
@@ -39,45 +42,15 @@ async def index_price_tool(input: dict) -> dict:
             return {"index_price": f"{index} closed at {close_price}"}
         return {"index_price": "Price not available."}
 
-# === GPT-Powered Agent ===
+# === GPT Agents using MCPClient ===
 
-async def gpt_agent(agent_name: str, context: dict) -> dict:
-    tools_available = {
-        "eq_agent": ["live_news_tool"],
-        "fi_agent": ["index_price_tool"]
-    }
+async def eq_agent(input: dict) -> dict:
+    news = await mcp_client.call_tool(ToolCall(tool="live_news_tool", input={"topic": input.get("topic", "AI")}))
+    return {"eq_response": f"EQ analysis based on: {news['news']}"}
 
-    tools_prompt = {
-        "live_news_tool": "fetch live news headlines on a topic",
-        "index_price_tool": "get current index/market price"
-    }
-
-    tool_options = tools_available.get(agent_name, [])
-    tool_descriptions = "\n".join([f"- {tool}: {tools_prompt[tool]}" for tool in tool_options])
-
-    messages = [
-        {"role": "system", "content": f"You are the '{agent_name}'. Decide which tools to use:\n{tool_descriptions}"},
-        {"role": "user", "content": f"Context: {context}"}
-    ]
-
-    response = await openai.ChatCompletion.acreate(
-        model="gpt-4",
-        messages=messages,
-        temperature=0.3
-    )
-    decision = response.choices[0].message.content.lower()
-    result = {}
-
-    if "live_news_tool" in decision and "topic" in context:
-        news = await mcp_registry.tools["live_news_tool"]({"topic": context["topic"]})
-        result.update(news)
-
-    if "index_price_tool" in decision and "index" in context:
-        price = await mcp_registry.tools["index_price_tool"]({"index": context["index"]})
-        result.update(price)
-
-    result["agent_response"] = f"{agent_name} used tools based on decision: {decision}"
-    return result
+async def fi_agent(input: dict) -> dict:
+    price = await mcp_client.call_tool(ToolCall(tool="index_price_tool", input={"index": input.get("index", "SPX")}))
+    return {"fi_response": f"FI analysis based on: {price['index_price']}"}
 
 # === GPT Orchestrator ===
 
@@ -95,47 +68,56 @@ async def gpt_orchestrator(user_query: str) -> list:
     agent_list = response.choices[0].message.content.strip()
     return [agent.strip() for agent in agent_list.replace("[", "").replace("]", "").replace("'", "").split(",")]
 
-# === LangGraph Router ===
+# === LangGraph Orchestration ===
 
-@app.post("/langgraph_router")
-async def langgraph_router(query: str):
-    async def gpt_router(state: dict) -> str:
+@app.post("/langgraph_orchestrate")
+async def langgraph_orchestrate(query: str):
+    async def fetch_news(state):
+        result = await mcp_client.call_tool(ToolCall(tool="live_news_tool", input={"topic": query}))
+        return {**state, **result}
+
+    async def fetch_index(state):
+        result = await mcp_client.call_tool(ToolCall(tool="index_price_tool", input={"index": "NDX"}))
+        return {**state, **result}
+
+    async def run_eq(state):
+        result = await mcp_client.call_agent(AgentCall(agent="eq_agent", input=state))
+        return {**state, **result}
+
+    async def run_fi(state):
+        result = await mcp_client.call_agent(AgentCall(agent="fi_agent", input=state))
+        return {**state, **result}
+
+    async def summarize(state):
         messages = [
-            {"role": "system", "content": "You are a router. Choose one of ['live_news_tool', 'index_price_tool'] based on user query."},
-            {"role": "user", "content": f"User Query: {state['query']}"}
+            {"role": "system", "content": "Summarize the following financial insights for the user."},
+            {"role": "user", "content": f"EQ: {state.get('eq_response', '')}\nFI: {state.get('fi_response', '')}"}
         ]
         response = await openai.ChatCompletion.acreate(
             model="gpt-4",
-            messages=messages,
-            tool_choice="auto",
-            tools=[
-                {"type": "function", "function": {
-                    "name": "live_news_tool",
-                    "description": "Fetch news based on topic",
-                    "parameters": {"type": "object", "properties": {"topic": {"type": "string"}}, "required": ["topic"]}
-                }},
-                {"type": "function", "function": {
-                    "name": "index_price_tool",
-                    "description": "Get index price for a symbol",
-                    "parameters": {"type": "object", "properties": {"index": {"type": "string"}}, "required": ["index"]}
-                }}
-            ]
+            messages=messages
         )
-        return response.choices[0].message.tool_calls[0].function.name
+        return {**state, "summary": response.choices[0].message.content.strip()}
 
     graph = StateGraph()
-    graph.add_node("router", gpt_router)
-    graph.add_node("live_news_tool", ToolNode(tool=live_news_tool))
-    graph.add_node("index_price_tool", ToolNode(tool=index_price_tool))
-    graph.set_entry_point("router")
-    graph.add_edge("router", "live_news_tool")
-    graph.add_edge("router", "index_price_tool")
-    graph.add_edge("live_news_tool", END)
-    graph.add_edge("index_price_tool", END)
-    compiled = graph.compile()
-    return await compiled.invoke({"query": query})
+    graph.add_node("fetch_news", fetch_news)
+    graph.add_node("fetch_index", fetch_index)
+    graph.add_node("eq_agent", run_eq)
+    graph.add_node("fi_agent", run_fi)
+    graph.add_node("summarize", summarize)
 
-# === Autonomous GPT-driven Orchestration ===
+    graph.set_entry_point("fetch_news")
+    graph.add_edge("fetch_news", "fetch_index")
+    graph.add_edge("fetch_index", ["eq_agent", "fi_agent"])
+    graph.add_edge("eq_agent", "summarize")
+    graph.add_edge("fi_agent", "summarize")
+    graph.add_edge("summarize", END)
+
+    compiled = graph.compile()
+    result = await compiled.invoke({})
+    return result
+
+# === Autonomous Orchestration ===
 
 @app.post("/autonomous_orchestrate")
 async def autonomous_orchestrate(query: str):
@@ -143,7 +125,7 @@ async def autonomous_orchestrate(query: str):
     state = {"topic": query, "index": "NDX"}
     results = {}
     for agent in selected_agents:
-        result = await gpt_agent(agent, state)
+        result = await mcp_client.call_agent(AgentCall(agent=agent, input=state))
         results[agent] = result
 
     summary_prompt = [
@@ -160,11 +142,11 @@ async def autonomous_orchestrate(query: str):
         "gpt_summary": final.choices[0].message.content.strip()
     }
 
-# === Register Tools on Startup ===
+# === Register with MCP Server ===
 
 @app.on_event("startup")
 async def startup():
-    mcp_registry.register_tool("live_news_tool", live_news_tool)
-    mcp_registry.register_tool("index_price_tool", index_price_tool)
-    mcp_registry.register_agent("eq_agent", lambda ctx: gpt_agent("eq_agent", ctx))
-    mcp_registry.register_agent("fi_agent", lambda ctx: gpt_agent("fi_agent", ctx))
+    await mcp_server.register_tool("live_news_tool", live_news_tool)
+    await mcp_server.register_tool("index_price_tool", index_price_tool)
+    await mcp_server.register_agent("eq_agent", eq_agent)
+    await mcp_server.register_agent("fi_agent", fi_agent)
