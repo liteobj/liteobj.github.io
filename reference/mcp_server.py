@@ -2,7 +2,7 @@ import asyncio
 import json
 import logging
 from typing import List, Dict, Any, Optional
-import pyodbc
+import jaydebeapi
 from dotenv import load_dotenv
 import os
 from mcp import Server, Tool, ToolCallResult, types
@@ -20,21 +20,28 @@ class SQLServer:
         self.insights = []
         
     async def connect(self):
-        """Connect to MS SQL Server"""
+        """Connect to MS SQL Server using JDBC"""
         server = os.getenv("SQL_SERVER")
         database = os.getenv("SQL_DATABASE")
         username = os.getenv("SQL_USERNAME")
         password = os.getenv("SQL_PASSWORD")
         
-        connection_string = (
-            f"DRIVER={{ODBC Driver 17 for SQL Server}};"
-            f"SERVER={server};"
-            f"DATABASE={database};"
-            f"UID={username};"
-            f"PWD={password}"
-        )
+        # JDBC connection string
+        jdbc_url = f"jdbc:sqlserver://{server};databaseName={database}"
         
-        self.connection = pyodbc.connect(connection_string)
+        # Path to the SQL Server JDBC driver
+        driver_path = os.getenv("JDBC_DRIVER_PATH", "mssql-jdbc-12.4.2.jre11.jar")
+        
+        # JDBC driver class
+        driver_class = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+        
+        # Connect using jaydebeapi
+        self.connection = jaydebeapi.connect(
+            driver_class,
+            jdbc_url,
+            [username, password],
+            driver_path
+        )
         self.cursor = self.connection.cursor()
         
     async def close(self):
@@ -63,7 +70,7 @@ class SQLServer:
                 IS_NULLABLE
             FROM INFORMATION_SCHEMA.COLUMNS
             WHERE TABLE_NAME = ?
-        """, table_name)
+        """, [table_name])
         
         columns = []
         for row in self.cursor.fetchall():
@@ -87,7 +94,7 @@ class SQLServer:
             
             # For SELECT queries, return the results
             if query.strip().upper().startswith("SELECT"):
-                columns = [column[0] for column in self.cursor.description]
+                columns = [desc[0] for desc in self.cursor.description]
                 results = []
                 for row in self.cursor.fetchall():
                     result = {}
