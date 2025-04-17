@@ -110,11 +110,182 @@ class SQLServer:
             return "No insights recorded yet."
         return "\n\n".join(f"- {insight}" for insight in self.insights)
 
-class MCPServer(Server):
+class MCPServer:
     def __init__(self):
-        super().__init__()
         self.sql_server = SQLServer()
+        self.server = Server("mcp_server")
+        self._register_handlers()
         
+    def _register_handlers(self):
+        @self.server.list_resources()
+        async def handle_list_resources() -> list[types.Resource]:
+            return [
+                types.Resource(
+                    uri=AnyUrl("memo://insights"),
+                    name="Business Insights Memo",
+                    description="A living document of discovered business insights",
+                    mimeType="text/plain",
+                )
+            ]
+
+        @self.server.read_resource()
+        async def handle_read_resource(uri: AnyUrl) -> str:
+            if uri.scheme != "memo":
+                raise ValueError(f"Unsupported URI scheme: {uri.scheme}")
+            path = str(uri).replace("memo://", "")
+            if not path or path != "insights":
+                raise ValueError(f"Unknown resource path: {path}")
+            return self.sql_server._synthesize_memo()
+
+        @self.server.list_prompts()
+        async def handle_list_prompts() -> list[types.Prompt]:
+            return [
+                types.Prompt(
+                    name="mcp-demo",
+                    description="A prompt to seed the database with initial data and demonstrate what you can do with an MCP Server",
+                    arguments=[
+                        types.PromptArgument(
+                            name="topic",
+                            description="Topic to seed the database with initial data",
+                            required=True,
+                        )
+                    ],
+                )
+            ]
+
+        @self.server.get_prompt()
+        async def handle_get_prompt(name: str, arguments: Dict[str, str] | None) -> types.GetPromptResult:
+            if name != "mcp-demo":
+                raise ValueError(f"Unknown prompt: {name}")
+            if not arguments or "topic" not in arguments:
+                raise ValueError("Missing required argument: topic")
+            
+            topic = arguments["topic"]
+            prompt = f"""
+            The assistant's goal is to walk through an informative demo of MCP. To demonstrate the Model Context Protocol (MCP) we will leverage this example server to interact with a SQL Server database.
+
+            The user has provided the topic: {topic}. The goal of the following instructions is to walk the user through the process of using the 3 core aspects of an MCP server. These are: Prompts, Tools, and Resources.
+
+            The user is now ready to begin the demo.
+            """
+            
+            return types.GetPromptResult(
+                description=f"Demo template for {topic}",
+                messages=[
+                    types.PromptMessage(
+                        role="user",
+                        content=types.TextContent(type="text", text=prompt.strip()),
+                    )
+                ],
+            )
+            
+        @self.server.list_tools()
+        async def handle_list_tools() -> list[types.Tool]:
+            return [
+                types.Tool(
+                    name="read_query",
+                    description="Execute a SELECT query on the SQL Server database",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "query": {"type": "string", "description": "SELECT SQL query to execute"},
+                        },
+                        "required": ["query"],
+                    }
+                ),
+                types.Tool(
+                    name="write_query",
+                    description="Execute an INSERT, UPDATE, or DELETE query on the SQL Server database",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "query": {"type": "string", "description": "SQL query to execute"},
+                        },
+                        "required": ["query"],
+                    }
+                ),
+                types.Tool(
+                    name="create_table",
+                    description="Create a new table in the SQL Server database",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "query": {"type": "string", "description": "CREATE TABLE SQL statement"},
+                        },
+                        "required": ["query"],
+                    }
+                ),
+                types.Tool(
+                    name="list_tables",
+                    description="List all tables in the SQL Server database",
+                    inputSchema={}
+                ),
+                types.Tool(
+                    name="describe_table",
+                    description="Get the schema information for a specific table",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "table_name": {"type": "string", "description": "Name of the table to describe"},
+                        },
+                        "required": ["table_name"],
+                    }
+                ),
+                types.Tool(
+                    name="append_insight",
+                    description="Add a business insight to the memo",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "insight": {"type": "string", "description": "Business insight discovered from data analysis"},
+                        },
+                        "required": ["insight"],
+                    }
+                )
+            ]
+           
+        @self.server.call_tool()
+        async def handle_call_tool(name: str, args: Dict[str, Any]) -> ToolCallResult:
+            try:
+                if name == "list_tables":
+                    result = await self.sql_server.get_table_list()
+                elif name == "describe_table":
+                    result = await self.sql_server.get_table_schema(args["table_name"])
+                elif name == "append_insight":
+                    if not args or "insight" not in args:
+                        raise ValueError("Missing insight argument")
+                    self.sql_server.insights.append(args["insight"])
+                    result = "Insight added to memo"
+                elif name in ["read_query", "write_query", "create_table"]:
+                    if not args or "query" not in args:
+                        raise ValueError("Missing query argument")
+                    query = args["query"]
+                    
+                    if name == "read_query" and not query.strip().upper().startswith("SELECT"):
+                        raise ValueError("Only SELECT queries are allowed for read_query")
+                    elif name == "write_query" and query.strip().upper().startswith("SELECT"):
+                        raise ValueError("SELECT queries are not allowed for write_query")
+                    elif name == "create_table" and not query.strip().upper().startswith("CREATE TABLE"):
+                        raise ValueError("Only CREATE TABLE statements are allowed")
+                    
+                    result = await self.sql_server.execute_query(query)
+                else:
+                    return ToolCallResult(
+                        success=False,
+                        content=f"Unknown tool: {name}"
+                    )
+                    
+                return ToolCallResult(
+                    success=True,
+                    content=result
+                )
+            except Exception as e:
+                logger.error(f"Error executing tool {name}: {str(e)}")
+                return ToolCallResult(
+                    success=False,
+                    content=f"Error executing tool {name}: {str(e)}"
+                )
+
     async def initialize(self):
         """Initialize the server and connect to the database"""
         await self.sql_server.connect()
@@ -122,181 +293,6 @@ class MCPServer(Server):
     async def cleanup(self):
         """Clean up resources"""
         await self.sql_server.close()
-
-    @server.list_resources()
-    async def handle_list_resources() -> list[types.Resource]:
-        """List available resources"""
-        return [
-            types.Resource(
-                uri=AnyUrl("memo://insights"),
-                name="Business Insights Memo",
-                description="A living document of discovered business insights",
-                mimeType="text/plain",
-            )
-        ]
-
-    @server.read_resource()
-    async def handle_read_resource(uri: AnyUrl) -> str:
-        """Read a resource"""
-        if uri.scheme != "memo":
-            raise ValueError(f"Unsupported URI scheme: {uri.scheme}")
-        path = str(uri).replace("memo://", "")
-        if not path or path != "insights":
-            raise ValueError(f"Unknown resource path: {path}")
-        return self.sql_server._synthesize_memo()
-
-    @server.list_prompts()
-    async def handle_list_prompts() -> list[types.Prompt]:
-        """List available prompts"""
-        return [
-            types.Prompt(
-                name="mcp-demo",
-                description="A prompt to seed the database with initial data and demonstrate what you can do with an MCP Server",
-                arguments=[
-                    types.PromptArgument(
-                        name="topic",
-                        description="Topic to seed the database with initial data",
-                        required=True,
-                    )
-                ],
-            )
-        ]
-
-    @server.get_prompt()
-    async def handle_get_prompt(name: str, arguments: Dict[str, str] | None) -> types.GetPromptResult:
-        """Get a specific prompt"""
-        if name != "mcp-demo":
-            raise ValueError(f"Unknown prompt: {name}")
-        if not arguments or "topic" not in arguments:
-            raise ValueError("Missing required argument: topic")
-        
-        topic = arguments["topic"]
-        prompt = f"""
-        The assistant's goal is to walk through an informative demo of MCP. To demonstrate the Model Context Protocol (MCP) we will leverage this example server to interact with a SQL Server database.
-
-        The user has provided the topic: {topic}. The goal of the following instructions is to walk the user through the process of using the 3 core aspects of an MCP server. These are: Prompts, Tools, and Resources.
-
-        The user is now ready to begin the demo.
-        """
-        
-        return types.GetPromptResult(
-            description=f"Demo template for {topic}",
-            messages=[
-                types.PromptMessage(
-                    role="user",
-                    content=types.TextContent(type="text", text=prompt.strip()),
-                )
-            ],
-        )
-        
-    @server.list_tools()
-    async def handle_list_tools() -> list[types.Tool]:
-        """List available tools"""
-        return [
-            types.Tool(
-                name="read_query",
-                description="Execute a SELECT query on the SQL Server database",
-                inputSchema={
-                    "type": "object",
-                    "properties": {
-                        "query": {"type": "string", "description": "SELECT SQL query to execute"},
-                    },
-                    "required": ["query"],
-                }
-            ),
-            types.Tool(
-                name="write_query",
-                description="Execute an INSERT, UPDATE, or DELETE query on the SQL Server database",
-                inputSchema={
-                    "type": "object",
-                    "properties": {
-                        "query": {"type": "string", "description": "SQL query to execute"},
-                    },
-                    "required": ["query"],
-                }
-            ),
-            types.Tool(
-                name="create_table",
-                description="Create a new table in the SQL Server database",
-                inputSchema={
-                    "type": "object",
-                    "properties": {
-                        "query": {"type": "string", "description": "CREATE TABLE SQL statement"},
-                    },
-                    "required": ["query"],
-                }
-            ),
-            types.Tool(
-                name="list_tables",
-                description="List all tables in the SQL Server database",
-                inputSchema={}
-            ),
-            types.Tool(
-                name="describe_table",
-                description="Get the schema information for a specific table",
-                inputSchema={
-                    "type": "object",
-                    "properties": {
-                        "table_name": {"type": "string", "description": "Name of the table to describe"},
-                    },
-                    "required": ["table_name"],
-                }
-            ),
-            types.Tool(
-                name="append_insight",
-                description="Add a business insight to the memo",
-                inputSchema={
-                    "type": "object",
-                    "properties": {
-                        "insight": {"type": "string", "description": "Business insight discovered from data analysis"},
-                    },
-                    "required": ["insight"],
-                }
-            )
-        ]
-       
-    @server.call_tool()
-    async def handle_call_tool(name: str, args: Dict[str, Any]) -> ToolCallResult:
-        """Execute a tool call"""
-        try:
-            if name == "list_tables":
-                result = await self.sql_server.get_table_list()
-            elif name == "describe_table":
-                result = await self.sql_server.get_table_schema(args["table_name"])
-            elif name == "append_insight":
-                if not args or "insight" not in args:
-                    raise ValueError("Missing insight argument")
-                self.sql_server.insights.append(args["insight"])
-                result = "Insight added to memo"
-            elif name in ["read_query", "write_query", "create_table"]:
-                if not args or "query" not in args:
-                    raise ValueError("Missing query argument")
-                query = args["query"]
-                
-                if name == "read_query" and not query.strip().upper().startswith("SELECT"):
-                    raise ValueError("Only SELECT queries are allowed for read_query")
-                elif name == "write_query" and query.strip().upper().startswith("SELECT"):
-                    raise ValueError("SELECT queries are not allowed for write_query")
-                elif name == "create_table" and not query.strip().upper().startswith("CREATE TABLE"):
-                    raise ValueError("Only CREATE TABLE statements are allowed")
-                
-                result = await self.sql_server.execute_query(query)
-            else:
-                return ToolCallResult(
-                    success=False,
-                    content=f"Unknown tool: {name}"
-                )
-                
-            return ToolCallResult(
-                success=True,
-                content=result
-            )
-        except Exception as e:
-            logger.error(f"Error executing tool {name}: {str(e)}")
-            return ToolCallResult(
-                success=False,
-                content=f"Error executing tool {name}: {str(e)}"
-            )
 
 async def main():
     server = MCPServer()
