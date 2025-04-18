@@ -1,10 +1,10 @@
 import streamlit as st
 import requests
 import json
-import sseclient
 import urllib3
 import threading
 import time
+from sse_starlette.sse import EventSourceResponse
 
 # Disable SSL warnings
 urllib3.disable_warnings()
@@ -38,17 +38,19 @@ with st.sidebar:
                 headers={"Accept": "text/event-stream"},
                 verify=False
             )
-            client = sseclient.SSEClient(response)
             
-            for event in client.events():
-                if event.data:
-                    data = json.loads(event.data)
-                    message = data.get("message", "")
-                    if message:
-                        st.session_state.notifications.append(message)
-                        if len(st.session_state.notifications) > 10:  # Keep last 10 notifications
-                            st.session_state.notifications.pop(0)
-                        st.rerun()
+            for line in response.iter_lines():
+                if line:
+                    try:
+                        data = json.loads(line.decode('utf-8'))
+                        message = data.get("message", "")
+                        if message:
+                            st.session_state.notifications.append(message)
+                            if len(st.session_state.notifications) > 10:  # Keep last 10 notifications
+                                st.session_state.notifications.pop(0)
+                            st.rerun()
+                    except json.JSONDecodeError:
+                        continue
         except Exception as e:
             print(f"Error in notification thread: {e}")
 
@@ -93,19 +95,21 @@ if prompt := st.chat_input("What would you like to know?"):
                 verify=False
             )
             
-            client = sseclient.SSEClient(response)
-            
             # Process streaming response
-            for event in client.events():
-                if event.event == "message":
-                    data = json.loads(event.data)
-                    chunk = data["chunk"]
-                    full_response += chunk + "\n"
-                    message_placeholder.markdown(full_response + "▌")
-                elif event.event == "error":
-                    data = json.loads(event.data)
-                    st.error(f"Error: {data['error']}")
-                    break
+            for line in response.iter_lines():
+                if line:
+                    try:
+                        data = json.loads(line.decode('utf-8'))
+                        if data.get("event") == "message":
+                            chunk = data.get("data", {}).get("chunk", "")
+                            full_response += chunk + "\n"
+                            message_placeholder.markdown(full_response + "▌")
+                        elif data.get("event") == "error":
+                            error = data.get("data", {}).get("error", "Unknown error")
+                            st.error(f"Error: {error}")
+                            break
+                    except json.JSONDecodeError:
+                        continue
             
             # Update the placeholder with the final response
             message_placeholder.markdown(full_response)
