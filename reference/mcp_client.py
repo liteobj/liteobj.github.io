@@ -6,6 +6,7 @@ import json
 import openai
 from dotenv import load_dotenv
 import os
+import types
 
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
@@ -133,7 +134,7 @@ If you don't need to use any tools, just provide your response directly."""
         """Execute a tool and return its result as a string"""
         try:
             result = await self.session.call_tool(tool_name, args)
-            return json.dumps(result.content, indent=2)
+            return json.dumps(serialize_content(result.content), indent=2)
         except Exception as e:
             return f"Error executing tool {tool_name}: {str(e)}"
         
@@ -158,6 +159,16 @@ If you don't need to use any tools, just provide your response directly."""
     async def cleanup(self):
         """Clean up resources"""
         await self.exit_stack.aclose()
+
+def serialize_content(content):
+    if isinstance(content, types.TextContent):
+        return content.text
+    elif isinstance(content, dict):
+        return {k: serialize_content(v) for k, v in content.items()}
+    elif isinstance(content, list):
+        return [serialize_content(item) for item in content]
+    else:
+        return content
 
 async def main():
     if len(sys.argv) < 2:

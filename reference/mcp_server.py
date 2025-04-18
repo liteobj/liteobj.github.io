@@ -10,8 +10,28 @@ from pydantic import AnyUrl
 
 load_dotenv()  # load environment variables from .env
 
+# Configure logging to output to both console and file
 logger = logging.getLogger('mcp_sql_server')
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
+
+# Create console handler
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.DEBUG)
+
+# Create file handler
+file_handler = logging.FileHandler('mcp_server.log')
+file_handler.setLevel(logging.DEBUG)
+
+# Create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+console_handler.setFormatter(formatter)
+file_handler.setFormatter(formatter)
+
+# Add handlers to logger
+logger.addHandler(console_handler)
+logger.addHandler(file_handler)
+
+logger.info("Starting MCP SQL Server")
 
 class SQLServer:
     def __init__(self):
@@ -116,6 +136,25 @@ class SQLServer:
         if not self.insights:
             return "No insights recorded yet."
         return "\n\n".join(f"- {insight}" for insight in self.insights)
+
+    def _is_read_only_query(self, query: str) -> bool:
+        """Check if a query is read-only by examining the SQL statement"""
+        query = query.strip().upper()
+        read_only_keywords = {"SELECT", "SHOW", "DESCRIBE", "EXPLAIN"}
+        write_keywords = {"INSERT", "UPDATE", "DELETE", "CREATE", "ALTER", "DROP", "TRUNCATE", "MERGE"}
+        
+        # Check for write operations first
+        for keyword in write_keywords:
+            if query.startswith(keyword):
+                return False
+                
+        # Check for read operations
+        for keyword in read_only_keywords:
+            if query.startswith(keyword):
+                return True
+                
+        # If we can't determine, assume it's a write operation for safety
+        return False
 
 class MCPServer:
     def __init__(self):
